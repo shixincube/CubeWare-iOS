@@ -105,8 +105,15 @@ CubeWare项目目录结构如下图所示,主要包含CubeEngine、CubeWare、Cu
 ###  获取AppId和AppKey
 要使用引擎，需要先到[魔方官网](http://www.shixincube.com)注册开发者帐号，注册并登录以后，在控制台中选择:我的应用->创建应用，完善app信息后点击确认。创建后app会显示在：我的应用->全部应用 下，选中创建的app,即可查看app的AppId和AppKey。
 
-在CDCubeEngineConfig中设置AppId和AppKey,设置成功以后即可运行Demo
+在CDCubeEngineConfig中设置AppId和AppKey.
 
+### Pod导入引擎依赖库
+我们已经将引擎(CubeEngine)的基础库及通话媒体库都制作成pod导入的方式,podfile也已经配置完毕 ,您可以通过终端命令进入到项目pod文件对应目录,通过如下命令来导入引擎依赖库到您的工程中
+
+
+```
+pod install
+```
 
 ## 更多
 如您遇到其它问题请查看[引擎的开发者文档](https://www.shixincube.com/document/ios/introduction.html)或者通过[关于](https://www.shixincube.com/about)联系我们
