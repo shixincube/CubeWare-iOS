@@ -1,0 +1,84 @@
+//
+//  CubeEngineDemo.pch
+//  CubeEngineDemo
+//
+//  Created by jianchengpan on 2018/8/27.
+//  Copyright © 2018年 jianchengpan. All rights reserved.
+//
+
+#ifndef CubeEngineDemo_pch
+#define CubeEngineDemo_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+
+#pragma mark - Extension
+#import "UIView+Extension.h"
+#import "UILabel+Extension.h"
+#import <UIImageView+WebCache.h>
+
+// CubeDemo 引擎配置数据
+#import "CDCubeEngineConfig.h"
+#import "CDShareInstance.h"
+
+#import "CDLoginAccountModel.h"
+
+
+///屏幕宽度
+#define kScreenWidth   [UIScreen mainScreen].bounds.size.width
+///屏幕高度
+#define kScreenHeight  [UIScreen mainScreen].bounds.size.height
+///TabBar高度
+#define kTabBarHeight  49.0
+/// iPhoneX顶部宏
+#define kNavigationBarHeight         (kScreenHeight >= 812.0 ? 88.0 : 64.0)
+/// iPhoneX底部宏
+#define kSafeAreaBottomHeight        (kScreenHeight >= 812.0 ? 34.0 : 0.0)
+///是否是iPhone X
+#define kIsIPhoneX                   (kScreenHeight >= 812.0 ? YES : NO)
+
+//字体
+#define BOLDSYSTEMFONT(FONTSIZE)[UIFont boldSystemFontOfSize:FONTSIZE]
+#define SYSTEMFONT(FONTSIZE)    [UIFont systemFontOfSize:FONTSIZE]
+#define FONT(NAME, FONTSIZE)    [UIFont fontWithName:(NAME) size:(FONTSIZE)]
+
+//颜色
+#define KClearColor [UIColor clearColor]
+#define KWhiteColor [UIColor whiteColor]
+#define KBlackColor [UIColor blackColor]
+#define KGrayColor [UIColor grayColor]
+#define KGray2Color [UIColor lightGrayColor]
+#define KBlueColor [UIColor blueColor]
+#define KRedColor [UIColor redColor]
+
+// #5993f2
+#define KThemeColor RGBA(89, 147, 242, 1.f)
+
+//随机颜色
+#define RGBA(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:a]
+
+#define SafeAreaTopHeight (kScreenHeight >= 812.0 ? 88 : 64)
+#define SafeAreaBottomHeight (kScreenHeight >= 812.0 ? 34 : 0)
+
+#ifdef  DEBUG
+#define CWLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#define CWLog(...)
+#endif
+
+#pragma mark - Framework
+#import <CubeEngineFoundationKit/CubeEngineFoundationKit.h>
+#import <CubeEngineCallKit/CubeEngineCallKit.h>
+#import <Masonry.h>
+#import <AFNetworking.h>
+//#import <MBProgressHUD.h>
+
+
+#import "CWColorUtil.h"
+#import "CDNetWorkRequestUrl.h"
+
+#import <CubeWare.h>
+
+#endif /* CubeEngineDemo_pch */
