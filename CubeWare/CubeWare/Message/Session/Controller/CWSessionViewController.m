@@ -611,7 +611,6 @@
 			voiceMsg.status = CubeMessageStatusSending;
 			voiceMsg.messageDirection = CubeMessageDirectionSent;
             voiceMsg.filePath = filePath;
-			[[CubeWare sharedSingleton].messageService processMessagesInSameSession:@[voiceMsg]];
 			[[CubeWare sharedSingleton].fileService startUploadFileWithFileMessage:voiceMsg];
 		}
 	}];
