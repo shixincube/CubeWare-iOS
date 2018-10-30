@@ -103,7 +103,7 @@ CubeWare项目目录结构如下图所示,主要包含CubeEngine、CubeWare、Cu
 
 ## 接入指南
 ###  获取AppId和AppKey
-要使用引擎，需要先到[魔方官网](http://www.shixincube.com)注册开发者帐号，注册并登录以后，在控制台中选择:我的应用->创建应用，完善app信息后点击确认。创建后app会显示在：我的应用->全部应用 下，选中创建的app,即可查看app的AppId和AppKey。
+要使用引擎，需要先到[魔方官网](http://www.shixincube.com)注册开发者帐号，注册并登录以后，在控制台中选择:我的应用->创建应用,完善app信息后点击确认。创建后app会显示在：我的应用->全部应用 下,选中创建的app,即可查看app的AppId和AppKey。
 
 在CDCubeEngineConfig中设置AppId和AppKey.
 
