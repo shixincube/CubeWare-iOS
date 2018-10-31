@@ -41,7 +41,7 @@
 #pragma mark - sync conference lists
 -(void)syncConferenceList{
     [[CubeEngine sharedSingleton].conferenceService queryConferenceWithCubeId:nil ConferenceType:@[] completion:^(NSArray *conferences) {
-        NSLog(@"sync conference result is :%@ ",conferences);
+//        NSLog(@"sync conference result is :%@ ",conferences);
         [self.conferenceDetailModels removeAllObjects];
         for (CubeConference *conference in conferences) {
             CDConferenceDetailInfoModel *detailModel = [[CDConferenceDetailInfoModel alloc] init];

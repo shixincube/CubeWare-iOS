@@ -811,7 +811,7 @@ static CDConnectedView *instanceView = nil;
 - (void)destroyConference:(CubeConference *)conference byUser:(CubeUser *)user
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [CWToastUtil showTextMessage:@"会议被销毁" andDelay:1.0f];
+//        [CWToastUtil showTextMessage:@"会议被销毁" andDelay:1.0f];
         [instanceView remove];
     });
 }
