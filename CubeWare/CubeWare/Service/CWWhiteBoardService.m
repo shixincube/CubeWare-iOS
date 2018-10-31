@@ -98,6 +98,22 @@
 }
 
 -(void)onWhiteboardInvited:(CubeWhiteBoard *)whiteboard from:(CubeUser *)from user:(NSArray<CubeGroupMember *> *)invites{
+    BOOL isCalling = NO;
+    id currentCall = [[CubeEngine sharedSingleton].mediaService currentCallWithCallType:CubeCallTypeCall|CubeCallTypeConfernce].firstObject;
+    if (currentCall) {
+        for (CubeGroupMember *member in invites) {
+            if ([member.cubeId isEqualToString:[CubeEngine sharedSingleton].userService.currentUser.cubeId]) {
+                isCalling = YES;
+                break;
+            }
+        }
+    }
+    
+    if (isCalling) {
+        [[CubeEngine sharedSingleton].whiteBoardService rejectInviteWhiteBoard:whiteboard.whiteboardId andCubeId:from.cubeId];
+        return;
+    }
+    
     for (id<CWWhiteBoardServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWWhiteBoardServiceDelegate)]) {
         if([obj respondsToSelector:@selector(whiteBoardInvite:from:invites:)])
         {
