@@ -722,6 +722,14 @@ static CDConnectedView *instanceView = nil;
     if (![quitMember.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId]) {
         self.whiteBoard = whiteBoard;
     }
+    else
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+        if ([self.whiteBoard.whiteboardId isEqualToString:whiteBoard.whiteboardId]) {
+            [self removeFromSuperview];
+        }
+        });
+    }
 }
 
 -(void)whiteBoardDestroy:(CubeWhiteBoard *)whiteBoard from:(CubeUser *)fromUser{
