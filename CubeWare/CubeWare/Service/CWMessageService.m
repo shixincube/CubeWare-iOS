@@ -282,6 +282,9 @@ static dispatch_queue_t cubeware_message_queue = NULL;
             return;
         }
         CWSession *session = [self sessionForMessage:lastMessage];
+        if (session.sessionId == nil) {
+            return;
+        }
 		//保存消息
 		id<CWMessageDBProtocol> messageDB = [[[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWMessageDBProtocol)] lastObject];
 		[messageDB saveOrUpdateMessages:messages];
