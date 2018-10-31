@@ -408,7 +408,7 @@ typedef enum : NSUInteger {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self removeFromSuperview];
             CDConnectedView *connectedView = [CDConnectedView shareInstance];
-            [connectedView.showView addSubview:view];
+            [connectedView.whiteBoarView addSubview:view];
             connectedView.whiteBoard = whiteBoard;
             [connectedView show];
         });
@@ -427,11 +427,14 @@ typedef enum : NSUInteger {
     
 }
 
--(void)callConnected:(CubeCallSession *)callSession from:(CubeUser *)from andView:(UIView *)view{
+-(void)callConnected:(CubeCallSession *)callSession from:(CubeUser *)from andRemoteView:(UIView *)remoteView andLocalView:(UIView *)localView{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self removeFromSuperview];
         CDConnectedView *connectedView = [CDConnectedView shareInstance];
-        [connectedView.showView addSubview:view];
+        [connectedView.showView addSubview:remoteView];
+        if (localView) {
+            [connectedView.showView addSubview:localView];
+        }
         connectedView.callSession = callSession;
         [connectedView show];
     });

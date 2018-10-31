@@ -293,7 +293,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             CDConnectedView *connectedView = [CDConnectedView shareInstance];
             connectedView.whiteBoard = whiteBoard;
-            [connectedView.showView addSubview:view];
+            [connectedView.whiteBoarView addSubview:view];
             [connectedView show];
             
             if (inviteCubeIds.count) {
@@ -367,7 +367,7 @@
     });
 }
 
--(void)callConnected:(CubeCallSession *)callSession from:(CubeUser *)from andView:(UIView *)view{
+-(void)callConnected:(CubeCallSession *)callSession from:(CubeUser *)from andRemoteView:(UIView *)remoteView andLocalView:(UIView *)localView{
     dispatch_async(dispatch_get_main_queue(), ^{
 //        CDConnectedView *connectedView = [CDConnectedView shareInstance];
 //        [connectedView.showView addSubview:view];

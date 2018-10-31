@@ -200,12 +200,12 @@
             [conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference] ||
             [conference.type isEqualToString:CubeGroupType_Video_Call]) {
             remoteVideoView = [[CubeEngine sharedSingleton].mediaService getRemoteViewForTarget:[NSString stringWithFormat:@"%d",conference.number]];
-            CGRect remoteFrame = CGRectMake(0, 0, UIScreenWidth, UIScreenWidth * 9/16);
+            CGRect remoteFrame = CGRectMake(0, (UIScreenHeight - (UIScreenWidth * 9/16))/2, UIScreenWidth, UIScreenWidth * 9/16);
             remoteVideoView.frame = remoteFrame;
         }
         else if ([conference.type isEqualToString:CubeGroupType_Voice_Conference] ||
                  [conference.type isEqualToString:CubeGroupType_Voice_Call]){
-            remoteVideoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenWidth * 9/16)];
+            remoteVideoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenHeight)];
             UILabel *showLable = [[UILabel alloc] init];
             showLable.text = @"正在进行多人语音通话...";
             showLable.textColor = [UIColor whiteColor];

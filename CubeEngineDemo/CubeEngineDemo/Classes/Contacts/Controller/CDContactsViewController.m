@@ -147,6 +147,7 @@
         self.total = groupQuery.page.total;
         self.groupArray = [NSMutableArray array];
         [self.groupArray addObjectsFromArray:groupQuery.groups];
+        [CDContactsManager shareInstance].grouplist = self.groupArray;
         dispatch_async(dispatch_get_main_queue(), ^{
             self.groupListView.dataArray = self.groupArray;
         });

@@ -34,7 +34,10 @@
  */
 @property (nonatomic,strong) UIView *showView;
 
-
+/**
+ 白板展示View
+ */
+@property (nonatomic,strong) UIView *whiteBoarView;
 ///**
 // 屏幕共享
 // */

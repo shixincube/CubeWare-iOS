@@ -20,6 +20,11 @@
 @property (nonatomic , strong) NSTimer *callTimer;
 
 /**
+ 等待接通定时器
+ */
+@property (nonatomic,strong) NSTimer *waitTimer;
+
+/**
  通话时间
  */
 @property (nonatomic , assign) long long timeCount;
@@ -72,29 +77,32 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self beginTimer];
-        UIView *view ;
+        UIView *remoteView;
+        UIView *localView;
         if (session.videoEnabled) {
-             view = [[CubeEngine sharedSingleton].mediaService getRemoteViewForTarget:session.callee.cubeId];
+             remoteView = [[CubeEngine sharedSingleton].mediaService getRemoteViewForTarget:session.callee.cubeId];
+             localView = [[CubeEngine sharedSingleton].mediaService getLocalViewForTarget:session.callee.cubeId];
+            CGRect frame = CGRectMake(0, 0, UIScreenWidth, UIScreenHeight);
+            remoteView.frame = frame;
+            localView.frame = CGRectMake(UIScreenWidth - UIScreenWidth / 3.6, 20, UIScreenWidth / 3.6, 4.0 / 3.0 * UIScreenWidth / 3.6);
         }
         else{
-            view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenWidth * 9/16)];
+            remoteView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenHeight)];
             UILabel *showLable = [[UILabel alloc] init];
             showLable.text = @"正在进行语音通话...";
             showLable.textColor = [UIColor whiteColor];
-            [view addSubview:showLable];
+            [remoteView addSubview:showLable];
             showLable.textAlignment = NSTextAlignmentCenter;
             [showLable mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.center.equalTo(view);
+                make.center.equalTo(remoteView);
                 make.size.mas_equalTo(CGSizeMake(UIScreenWidth, 30));
             }];
         }
-        CGRect frame = CGRectMake(0, 0, UIScreenWidth, UIScreenWidth * 9/16);
-        view.frame = frame;
-        
+
         for (id<CWCallServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWCallServiceDelegate)]) {
-            if([obj respondsToSelector:@selector(callConnected:from:andView:)])
+            if([obj respondsToSelector:@selector(callConnected:from:andRemoteView: andLocalView:)])
             {
-                [obj callConnected:session from:from andView:view];
+                [obj callConnected:session from:from andRemoteView:remoteView andLocalView:localView];
             }
         }
     });

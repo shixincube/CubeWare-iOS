@@ -25,12 +25,14 @@
 - (void)callRing:(CubeCallSession *)callSession from:(CubeUser *)from;
 
 /**
- 通话已连接
+  通话已连接
 
  @param callSession 通话
  @param from 通话发起者
+ @param remoteView 对端
+ @param localView 本地
  */
-- (void)callConnected:(CubeCallSession *)callSession from:(CubeUser *)from andView:(UIView *)view;
+- (void)callConnected:(CubeCallSession *)callSession from:(CubeUser *)from andRemoteView:(UIView *)remoteView andLocalView:(UIView *)localView;
 
 /**
  通话结束

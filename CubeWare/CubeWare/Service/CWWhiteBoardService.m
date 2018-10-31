@@ -9,7 +9,13 @@
 #import "CWWhiteBoardService.h"
 #import "CubeWareGlobalMacro.h"
 #import "CWMessageUtil.h"
+@interface CWWhiteBoardService()
 
+/**
+ 超时定时器，超过1分钟就发送挂断请求
+ */
+@property (nonatomic,strong) NSTimer *waitTimer;
+@end
 @implementation CWWhiteBoardService
 
 #pragma mark - api
@@ -40,8 +46,7 @@
 -(void)onWhiteboardCreated:(CubeWhiteBoard *)whiteboard from:(CubeUser *)from{
     dispatch_async(dispatch_get_main_queue(), ^{
         UIView *whiteBoardView = [[CubeEngine sharedSingleton].whiteBoardService getView];
-        CGRect remoteFrame = CGRectMake(0, 0, UIScreenWidth, UIScreenWidth*9/16);
-        whiteBoardView.frame = remoteFrame;
+        CGRect remoteFrame = CGRectMake( 0,0, UIScreenWidth, UIScreenWidth*9/16);
         for (id<CWWhiteBoardServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWWhiteBoardServiceDelegate)]) {
             if([obj respondsToSelector:@selector(whiteBoardCreate:from:andView:)])
             {
