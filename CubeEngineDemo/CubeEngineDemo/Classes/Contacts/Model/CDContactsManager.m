@@ -31,41 +31,48 @@
 
 - (void)getFriendList
 {
-    NSDictionary *loginInfoDic = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentLogin"];
-    NSString *appId = [loginInfoDic objectForKey:@"appId"];
-    NSString *cubeId = [loginInfoDic objectForKey:@"cubeId"];
-    NSString *queryCubeIdByAppId = [NSString stringWithFormat:@"%@%@",CDServiceHost,QueryCubeIdListByAppId];
-    NSDictionary *params = @{
-                             @"appId":appId,
-                             @"page":@(0),
-                             @"rows":@(100)
-                             };
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSDictionary *loginInfoDic = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentLogin"];
+        NSString *appId = [loginInfoDic objectForKey:@"appId"];
+        NSString *cubeId = [loginInfoDic objectForKey:@"cubeId"];
+        NSString *queryCubeIdByAppId = [NSString stringWithFormat:@"%@%@",CDServiceHost,QueryCubeIdListByAppId];
+        NSDictionary *params = @{
+                                 @"appId":appId,
+                                 @"page":@(0),
+                                 @"rows":@(100)
+                                 };
 
-    [[AFHTTPSessionManager manager] POST:queryCubeIdByAppId parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
-            NSArray *accountList = responseObject[@"data"][@"list"];
-            NSMutableArray *accountModelList = [NSMutableArray array];
-            for (NSDictionary *dic in accountList) {
-                CDLoginAccountModel *model = [CDLoginAccountModel fromDictionary:dic];
-                if (![model.cubeId isEqualToString:cubeId]) {
-                    [accountModelList addObject:model];
+        [[AFHTTPSessionManager manager] POST:queryCubeIdByAppId parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
+                NSArray *accountList = responseObject[@"data"][@"list"];
+                NSMutableArray *accountModelList = [NSMutableArray array];
+                for (NSDictionary *dic in accountList) {
+                    CDLoginAccountModel *model = [CDLoginAccountModel fromDictionary:dic];
+                    if (![model.cubeId isEqualToString:cubeId]) {
+                        [accountModelList addObject:model];
+                    }
                 }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [CDShareInstance sharedSingleton].friendList = accountModelList;
+                });
             }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [CDShareInstance sharedSingleton].friendList = accountModelList;
-            });
-        }
 
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
 
-    }];
+        }];
+    });
 }
 
 - (void)getGroupList
 {
-    [[CubeEngine sharedSingleton].groupService queryGroups:0 andCount:100 andBlock:^(CubeGroupQuery *groupQuery) {
-        [self.grouplist addObjectsFromArray:groupQuery.groups];
-    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[CubeEngine sharedSingleton].groupService queryGroups:0 andCount:100 andBlock:^(CubeGroupQuery *groupQuery) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.grouplist removeAllObjects];
+                [self.grouplist addObjectsFromArray:groupQuery.groups];
+            });
+        }];
+    });
 }
 
 @end

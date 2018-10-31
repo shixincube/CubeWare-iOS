@@ -62,7 +62,7 @@
         make.width.mas_equalTo(self.view.mas_width);
         make.bottom.mas_equalTo(self.view.mas_bottom);
     }];
-    [[CWWorkerFinder defaultFinder] registerWorker:self forProtocols:@[@protocol(CWConferenceServiceDelegate)]];
+    [[CWWorkerFinder defaultFinder] registerWorker:self forProtocols:@[@protocol(CWConferenceServiceDelegate),@protocol(CWGroupServiceDelegate)]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -161,9 +161,23 @@
             //显示正在进行中的会议
             [super updateSessionList:conferences];
         } failure:^(CubeError *error) {
-
+            
         }];
     }
 }
 
+#pragma mark - CWGroupServiceDelegate
+- (void)updateGroup:(CubeGroup *)group from:(CubeUser *)from
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sessionId == %@",group.groupId];
+        NSArray *result = [self.sessionArray filteredArrayUsingPredicate:predicate];
+        if (result && result.count > 0 )
+        {
+            CWSession *session = result.firstObject;
+            session.sessionName = group.displayName;
+        }
+         [self.sessionList reloadData];
+    });
+}
 @end

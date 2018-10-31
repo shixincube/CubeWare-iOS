@@ -392,12 +392,8 @@
 #pragma mark - Get data
 - (void)getContactData
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[CDContactsManager shareInstance] getGroupList];
-    });
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[CDContactsManager shareInstance] getFriendList];
-    });
+    [[CDContactsManager shareInstance] getGroupList];
+    [[CDContactsManager shareInstance] getFriendList];
 }
 
 #pragma mark -

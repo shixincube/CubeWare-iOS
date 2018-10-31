@@ -79,7 +79,7 @@
     self.navigationItem.rightBarButtonItem =  moreItem;
     self.navigationItem.leftBarButtonItem = backItem;
     
-    [[CWWorkerFinder defaultFinder] registerWorker:self forProtocols:@[@protocol(CWConferenceServiceDelegate)]];
+    [[CWWorkerFinder defaultFinder] registerWorker:self forProtocols:@[@protocol(CWConferenceServiceDelegate),@protocol(CWGroupServiceDelegate)]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -210,6 +210,13 @@
     }
 }
 
-
+- (void)updateGroup:(CubeGroup *)group from:(CubeUser *)from
+{
+    if ([group.groupId isEqualToString:self.session.sessionId]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.title = group.displayName;
+        });
+    }
+}
 
 @end

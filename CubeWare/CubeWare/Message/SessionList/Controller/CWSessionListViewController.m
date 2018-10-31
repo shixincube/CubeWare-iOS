@@ -124,10 +124,10 @@
                 locateIndex = self.sessionArray.count;
                 [self.sessionArray addObject:s];
                 [self.sessionList insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:locateIndex inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-				if(![[CubeWare sharedSingleton].infoManager userInfoForCubeId:s.sessionId inSession:nil])
-				{
-					[needBaseInfoSessions addObject:s.sessionId];
-				}
+//                if(![[CubeWare sharedSingleton].infoManager userInfoForCubeId:s.sessionId inSession:nil])
+//                {
+//                    [needBaseInfoSessions addObject:s.sessionId];
+//                }
             }
 			else
 			{

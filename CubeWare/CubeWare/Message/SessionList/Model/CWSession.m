@@ -48,8 +48,9 @@
 
 -(NSString *)appropriateName{
 //    NSString *name = [[CubeWare sharedSingleton].infoManager userInfoForCubeId:self.sessionId inSession:nil].appropriateName;
+    NSString *sessionname = [[CubeWare sharedSingleton].messageService.delegate getSessionName:nil forSession:self];
     NSString *name =  self.sessionName.length > 0 ? self.sessionName :  self.sessionId;
-	return name ? name : self.sessionId;
+    return sessionname?sessionname:name;
 }
 
 - (BOOL)showNickName{
