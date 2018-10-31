@@ -43,7 +43,7 @@
 
 #pragma mark - CubeEngineConferenceServiceDelegate
 - (void)onConferenceCreated:(CubeConference *)conference byUser:(CubeUser *)user{
-    NSLog(@"onConference created");
+//    NSLog(@"onConference created");
     if ([conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference])
     {
 
@@ -65,8 +65,8 @@
 }
 
 - (void)onConferenceJoined:(CubeConference *)conference fromUser:(CubeUser *)joinedUser{
-    NSLog(@"onConference joined");
-    
+//    NSLog(@"onConference joined");
+
     for (id<CWConferenceServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWConferenceServiceDelegate)]) {
         if([obj respondsToSelector:@selector(joinConference:andJoin:)])
         {
@@ -78,7 +78,7 @@
 }
 
 -(void)onConferenceFailed:(CubeConference *)conference withError:(CubeError *)error{
-    NSLog(@"onConference failed with error : %@",error);
+//    NSLog(@"onConference failed with error : %@",error);
     if ([conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference])
     {
         for (id<CWConferenceServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWConferenceServiceDelegate)]) {
@@ -101,7 +101,7 @@
 }
 
 - (void)onConferenceInvited:(CubeConference *)conference fromUser:(CubeUser *)user andInvites:(NSArray<CubeUser *> *)invites{
-    NSLog(@"onConference invited");
+//    NSLog(@"onConference invited");
     for (id<CWConferenceServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWConferenceServiceDelegate)]) {
         if([obj respondsToSelector:@selector(inviteConference:andFrom:andInvites:)])
         {
@@ -112,8 +112,8 @@
 }
 
 -(void)onConferenceQuited:(CubeConference *)conference fromUser:(CubeUser *)quitMember{
-         NSLog(@"onConference quited");
-        
+//         NSLog(@"onConference quited");
+
         for (id<CWConferenceServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWConferenceServiceDelegate)]) {
             if([obj respondsToSelector:@selector(quitConference:andQuitMember:)])
             {
@@ -123,7 +123,7 @@
 }
 
 -(void)onConferenceDestroyed:(CubeConference *)conference byUser:(CubeUser *)user{
-    NSLog(@"onConference destroyed");
+//    NSLog(@"onConference destroyed");
     for (id<CWConferenceServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWConferenceServiceDelegate)]) {
         if([obj respondsToSelector:@selector(destroyConference:byUser:)])
         {
@@ -134,8 +134,8 @@
 }
 
 -(void)onConferenceAcceptInvited:(CubeConference *)conference fromUser:(CubeUser *)inviteUser byUser:(CubeUser *)joinedMember{
-    NSLog(@"onConferenceAccept invited");
-    
+//    NSLog(@"onConferenceAccept invited");
+
     [[CubeEngine sharedSingleton].conferenceService joinConference:conference.groupId];
     for (id<CWConferenceServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWConferenceServiceDelegate)]) {
         if([obj respondsToSelector:@selector(joinConference:andJoin:)])
