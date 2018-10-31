@@ -726,7 +726,7 @@ static CDConnectedView *instanceView = nil;
     {
         dispatch_async(dispatch_get_main_queue(), ^{
         if ([self.whiteBoard.whiteboardId isEqualToString:whiteBoard.whiteboardId]) {
-            [self removeFromSuperview];
+            [instanceView remove];
         }
         });
     }
@@ -735,7 +735,7 @@ static CDConnectedView *instanceView = nil;
 -(void)whiteBoardDestroy:(CubeWhiteBoard *)whiteBoard from:(CubeUser *)fromUser{
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([self.whiteBoard.whiteboardId isEqualToString:whiteBoard.whiteboardId]) {
-            [self removeFromSuperview];
+             [instanceView remove];
         }
     });
 }
@@ -769,7 +769,6 @@ static CDConnectedView *instanceView = nil;
 #pragma mark - CWConferenceServiceDelegate
 
 -(void)connectedConference:(CubeConference *)conference andView:(UIView *)view{
-    NSLog(@"conference connected..");
 }
 
 - (void)joinConference:(CubeConference *)conference andJoin:(CubeUser *)joiner
@@ -791,7 +790,7 @@ static CDConnectedView *instanceView = nil;
     dispatch_async(dispatch_get_main_queue(), ^{
         self.conference = conference;
         if ([quiter.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId]) {
-            [self removeFromSuperview];
+            [instanceView remove];
         }
     });
 }
@@ -813,7 +812,7 @@ static CDConnectedView *instanceView = nil;
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [CWToastUtil showTextMessage:@"会议被销毁" andDelay:1.0f];
-        [self removeFromSuperview];
+        [instanceView remove];
     });
 }
 

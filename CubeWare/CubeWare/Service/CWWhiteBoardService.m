@@ -135,6 +135,9 @@
 
 -(void)onWhiteboardJoined:(CubeWhiteBoard *)whiteboard joinedMember:(CubeUser *)joinedMember{
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (whiteboard.maxNumber == 2) {
+            [self stopTimer];
+        }
         UIView *whiteBoardView = [[CubeEngine sharedSingleton].whiteBoardService getView];
         CGRect remoteFrame = CGRectMake(0, 0, UIScreenWidth, UIScreenWidth*9/16);
         whiteBoardView.frame = remoteFrame;
