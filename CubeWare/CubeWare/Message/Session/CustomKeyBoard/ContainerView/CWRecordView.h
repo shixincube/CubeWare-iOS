@@ -14,7 +14,7 @@
 @protocol CWRecordViewDelegate<NSObject>
 
 @optional
--(void)recordView:(CWRecordView *)recordView finshRecord:(NSString *)filePath;
+-(void)recordView:(CWRecordView *)recordView finshRecord:(NSString *)filePath andDuration:(CGFloat)duration;
 
 @end
 

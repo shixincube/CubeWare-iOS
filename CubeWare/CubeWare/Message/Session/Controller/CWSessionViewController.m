@@ -599,11 +599,11 @@
 }
 
 #pragma mark - CWRecordViewDelegate
-- (void)recordView:(CWRecordView *)recordView finshRecord:(NSString *)filePath{
+- (void)recordView:(CWRecordView *)recordView finshRecord:(NSString *)filePath andDuration:(CGFloat)duration{
 	[CubeMediaServiceUtils loadMediaInfo:nil ofFile:filePath withHandler:^(AVAsset *asset, CubeError *error) {
 		if(!error)
 		{
-			float duration = CMTimeGetSeconds([CubeMediaServiceUtils durationOf:asset]);
+//            float duration = CMTimeGetSeconds([CubeMediaServiceUtils durationOf:asset]);
 			NSString *fileName = [filePath lastPathComponent];
 			long long fileSize = [NSData dataWithContentsOfFile:filePath].length;
 			CubeVoiceClipMessage *voiceMsg = [[CubeVoiceClipMessage alloc] initWithFileName:fileName fileSize:fileSize duration:duration url:nil md5:nil andSender:[CWUserModel currentUser] receiver:[CubeUser userWithCubeId:self.session.sessionId andDiaplayName:nil andAvatar:nil]];

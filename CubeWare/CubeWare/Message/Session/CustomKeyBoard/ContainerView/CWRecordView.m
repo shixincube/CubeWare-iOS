@@ -51,6 +51,7 @@ typedef NS_ENUM(NSInteger,CWRecordState){
 @property (nonatomic, assign) CWRecordState recordState;
 @property (nonatomic, assign) BOOL onLongGesterIng;
 @property (nonatomic, strong) CWProgressLayer *progressLayer;
+@property (nonatomic, assign) NSTimeInterval duration;
 @end
 
 
@@ -146,7 +147,7 @@ typedef NS_ENUM(NSInteger,CWRecordState){
 	 _totalTime = 0;
 }
 
--(void)didFinishedRecordAudioToFile:(NSString *)filePath withError:(CubeError *)error{
+-(void)didFinishedRecordAudioToFile:(NSString *)filePath andDuration:(CGFloat)duration withError:(CubeError *)error{
 	if(error)
 	{
 		if (error.errorCode == 1102) { // 语音录制时间太短
@@ -158,7 +159,7 @@ typedef NS_ENUM(NSInteger,CWRecordState){
 	}
 	else
 	{
-		NSLog(@"lc::%s",__func__);
+        self.duration = duration;
 		[self recordFinshed];
 		self.filePath = filePath;
 		if (self.recordState == CWRecordStateWillReplay) {
@@ -229,8 +230,8 @@ typedef NS_ENUM(NSInteger,CWRecordState){
 - (void)sendRecord{
     [[CubeEngine sharedSingleton].mediaService stopCurrentPlay];
      [self showSomeViewWhenPlayBack:NO];
-    if (_delegate && [_delegate respondsToSelector:@selector(recordView:finshRecord:)]) {
-        [_delegate recordView:self finshRecord:self.filePath];
+    if (_delegate && [_delegate respondsToSelector:@selector(recordView:finshRecord:andDuration:)]) {
+        [_delegate recordView:self finshRecord:self.filePath andDuration:self.duration];
     }
 }
 
@@ -253,10 +254,6 @@ typedef NS_ENUM(NSInteger,CWRecordState){
 
 - (void)updateSpecturmView{
     self.spectrumView.text = [NSString stringWithTimeInterval:_timeIndex++];
-    if (_timeIndex == 59) {//大约有1s左右的误差
-        self.recordState = CWRecordStateWillSend;
-        [[CubeEngine sharedSingleton].mediaService stopRecordAudio];
-    }
 }
 
 #pragma mark - Notification
