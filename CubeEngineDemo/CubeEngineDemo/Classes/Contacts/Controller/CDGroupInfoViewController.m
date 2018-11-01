@@ -154,7 +154,6 @@
 }
 - (void)addGroupMember:(CubeGroup *)group
 {
-    
     CDSelectContactsViewController *selectView = [[CDSelectContactsViewController alloc]init];
     selectView.dataArray = [CDShareInstance sharedSingleton].friendList;
     selectView.groupType = CubeGroupType_Normal;
@@ -207,7 +206,7 @@
     //修改成功
     self.group = group;
     self.infoTableView.group = group;
-    [[CDContactsManager shareInstance]getGroupList];
+    [[CDContactsManager shareInstance]queryGroupList];
 }
 
 - (void)actionSheet:(CWActionSheet *)actionSheet didClickedButtonAtIndex:(NSInteger)buttonIndex

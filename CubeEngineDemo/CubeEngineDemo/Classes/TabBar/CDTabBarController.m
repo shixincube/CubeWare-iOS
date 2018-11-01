@@ -392,8 +392,8 @@
 #pragma mark - Get data
 - (void)getContactData
 {
-    [[CDContactsManager shareInstance] getGroupList];
-    [[CDContactsManager shareInstance] getFriendList];
+    [[CDContactsManager shareInstance] queryGroupList];
+    [[CDContactsManager shareInstance] queryFriendList];
 }
 
 #pragma mark -

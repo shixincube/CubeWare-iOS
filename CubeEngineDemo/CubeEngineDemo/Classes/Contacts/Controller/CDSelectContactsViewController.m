@@ -220,8 +220,7 @@
     });
     if ([from.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId])
     {   //由我创建的
-#warning fixed me
-//        [[CDContactsManager shareInstance]getGroupList];
+        [[CDContactsManager shareInstance]queryGroupList];
         dispatch_async(dispatch_get_main_queue(), ^{
             NSArray *viewControllers = self.navigationController.viewControllers;
             if ([viewControllers.lastObject isKindOfClass:[self class]]) {

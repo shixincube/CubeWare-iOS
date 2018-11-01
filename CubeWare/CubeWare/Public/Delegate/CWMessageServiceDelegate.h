@@ -65,12 +65,10 @@
 
 /**
 获取会话名称
-
- @param message 消息
  @param session 会话
  @return 会话名称
  */
--(NSString *)getSessionName:(CubeMessageEntity *)message forSession:(CWSession *)session;
+-(NSString *)getSessionNameforSession:(CWSession *)session;
 
 /**
  获取会话是否需要更新

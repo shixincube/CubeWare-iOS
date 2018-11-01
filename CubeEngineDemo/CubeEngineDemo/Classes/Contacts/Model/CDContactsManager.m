@@ -7,6 +7,13 @@
 //
 
 #import "CDContactsManager.h"
+@interface CDContactsManager()
+
+/**
+ 群组信息  key :groupid
+ */
+//@property (nonatomic,assign) NSMutableDictionary *groupDic;
+@end
 
 @implementation CDContactsManager
 
@@ -25,11 +32,13 @@
     self = [super init];
     if (self) {
         self.grouplist = [NSMutableArray array];
+//        self.groupDic = [NSMutableDictionary dictionary];
+         [[CWWorkerFinder defaultFinder] registerWorker:self forProtocols:@[@protocol(CWGroupServiceDelegate)]];
     }
     return self;
 }
 
-- (void)getFriendList
+- (void)queryFriendList
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDictionary *loginInfoDic = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentLogin"];
@@ -63,7 +72,7 @@
     });
 }
 
-- (void)getGroupList
+- (void)queryGroupList
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[CubeEngine sharedSingleton].groupService queryGroups:0 andCount:100 andBlock:^(CubeGroupQuery *groupQuery) {
@@ -75,4 +84,31 @@
     });
 }
 
+- (CubeGroup *)getGroupInfo:(NSString *)groupId
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"groupId=%@",groupId];
+    NSArray *array = [self.grouplist filteredArrayUsingPredicate:predicate];
+    CubeGroup *group = array.firstObject;
+    if (group) {
+        return group;
+    }
+    return nil;
+}
+
+- (CDLoginAccountModel *)getFriendInfo:(NSString *)cubeId
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"cubeId=%@",cubeId];
+    NSArray *array = [[CDShareInstance sharedSingleton].friendList filteredArrayUsingPredicate:predicate];
+    CDLoginAccountModel *model = array.firstObject;
+    if (model) {
+        return model;
+    }
+    return nil;
+}
+
+#pragma mark -
+- (void)updateGrouplist
+{
+    [self queryGroupList];
+}
 @end

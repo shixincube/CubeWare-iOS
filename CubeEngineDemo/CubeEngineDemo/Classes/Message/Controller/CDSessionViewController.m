@@ -57,9 +57,7 @@
     if (self.session.sessionType == CWSessionTypeGroup)
     {
         imageName = @"groupicon.png";
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"groupId=%@",self.session.sessionId];
-        NSArray *array = [[CDContactsManager shareInstance].grouplist filteredArrayUsingPredicate:predicate];
-        CubeGroup *model = array.firstObject;
+        CubeGroup *model = [[CDContactsManager shareInstance] getGroupInfo:self.session.sessionId];
         if(model)
         {
             self.title = model.displayName;
@@ -68,9 +66,7 @@
     else
     {
         imageName = @"usericon.png";
-         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"cubeId=%@",self.session.sessionId];
-        NSArray *array = [[CDShareInstance sharedSingleton].friendList filteredArrayUsingPredicate:predicate];
-        CDLoginAccountModel *model = array.firstObject;
+        CDLoginAccountModel *model = [[CDContactsManager shareInstance]getFriendInfo:self.session.sessionId];
         if (model) {
             self.title = model.displayName;
         }

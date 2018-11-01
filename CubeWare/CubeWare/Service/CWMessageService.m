@@ -402,9 +402,9 @@ static dispatch_queue_t cubeware_message_queue = NULL;
     }
     
 	[session updateWithMessage:message andSummeryHelper:self.delegate];
-    if(self.delegate &&[self.delegate respondsToSelector:@selector(getSessionName:forSession:)])
+    if(self.delegate &&[self.delegate respondsToSelector:@selector(getSessionNameforSession:)])
     {
-        session.sessionName = [self.delegate getSessionName:message forSession:session];
+        session.sessionName = [self.delegate getSessionNameforSession:session];
     }
     return session;
 }

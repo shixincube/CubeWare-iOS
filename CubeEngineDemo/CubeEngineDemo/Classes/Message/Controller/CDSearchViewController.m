@@ -164,10 +164,7 @@
 
 - (BOOL)isJoined:(CubeGroup *)group
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"groupId=%@",group.groupId];
-    NSArray *array = [[CDContactsManager shareInstance].grouplist filteredArrayUsingPredicate:predicate];
-    CubeGroup *model = array.firstObject;
-    if(model)
+    if([[CDContactsManager shareInstance] getGroupInfo:group.groupId])
     {
         return YES;
     }

@@ -120,12 +120,10 @@ static CDMessageHelper *helper = nil;
     return nil;
 }
 
--(NSString *)getSessionName:(CubeMessageEntity *)message forSession:(CWSession *)session
+-(NSString *)getSessionNameforSession:(CWSession *)session
 {
     if (session.sessionType == CWSessionTypeGroup) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"groupId=%@",session.sessionId];
-        NSArray *array = [[CDContactsManager shareInstance].grouplist filteredArrayUsingPredicate:predicate];
-        CubeGroup *model = array.firstObject;
+        CubeGroup *model = [[CDContactsManager shareInstance] getGroupInfo:session.sessionId];
         if(model)
         {
             return model.displayName;
@@ -133,9 +131,7 @@ static CDMessageHelper *helper = nil;
     }
     else
     {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"cubeId=%@",session.sessionId];
-        NSArray *array = [[CDShareInstance sharedSingleton].friendList filteredArrayUsingPredicate:predicate];
-        CDLoginAccountModel *model = array.firstObject;
+        CDLoginAccountModel *model = [[CDContactsManager shareInstance] getFriendInfo:session.sessionId];
         if (model) {
             return model.displayName;
         }
