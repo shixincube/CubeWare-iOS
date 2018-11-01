@@ -61,6 +61,11 @@
 #pragma mark - CubeCallServiceDelegate
 
 -(void)onNewCall:(CubeCallSession *)session from:(CubeUser *)from{
+    // 如果在白板中 , 忽略音视频邀请
+    BOOL isWhiteBoardActing = [[CubeWare sharedSingleton].whiteBoardService currentWhiteboardActing];
+    if (isWhiteBoardActing) {
+        return;
+    }
     
     for (id<CWCallServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWCallServiceDelegate)]) {
         if([obj respondsToSelector:@selector(newCall:from:)])

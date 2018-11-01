@@ -818,9 +818,11 @@ static CDConnectedView *instanceView = nil;
 
 #pragma mark - CWCallServiceDelegate
 -(void)callEnded:(CubeCallSession *)callSession from:(CubeUser *)from{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [instanceView remove];
-    });
+    if (![[CubeWare sharedSingleton].whiteBoardService currentWhiteboardActing]) { //当前如果没进行白板演示
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [instanceView remove];
+        });
+    }
 }
 
 

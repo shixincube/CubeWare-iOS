@@ -53,7 +53,12 @@
 - (void)inviteMemberInWhiteBoardId:(NSString *)whiteBoardId andMembers:(NSArray<NSString *> *)members;
 
 
+/**
+ 当前是否正在进行白板演示
 
+ @return 当前是否进行白板演示
+ */
+- (BOOL)currentWhiteboardActing;
 
 
 @end

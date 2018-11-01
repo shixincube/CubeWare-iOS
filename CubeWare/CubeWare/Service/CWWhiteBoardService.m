@@ -18,12 +18,20 @@
 /**
  通话时间
  */
-@property (nonatomic , assign) long long timeCount;
+@property (nonatomic ,assign) long long timeCount;
 
 /**
  白板Id
  */
 @property (nonatomic,strong) NSString *whiteBoardId;
+
+
+/**
+ 正在演示中的白板..
+ */
+@property (nonatomic,strong) CubeWhiteBoard *currentWhiteBoard;
+
+
 @end
 @implementation CWWhiteBoardService
 
@@ -49,6 +57,10 @@
     [[CubeEngine sharedSingleton].whiteBoardService rejectInviteWhiteBoard:whiteboardId andCubeId:cubeId];
 }
 
+-(BOOL)currentWhiteboardActing{
+    return self.currentWhiteBoard ? YES : NO;
+}
+
 
 #pragma mark - CubeWhiteBoardServiceDelegate
 
@@ -72,6 +84,9 @@
 }
 
 -(void)onWhiteboardQuited:(CubeWhiteBoard *)whiteboard quitedMember:(CubeUser *)quitedMember{
+    if ([whiteboard.whiteboardId isEqualToString:self.currentWhiteBoard.whiteboardId]) {
+        self.currentWhiteBoard = nil;
+    }
     if (whiteboard.maxNumber == 2) {
         [self stopTimer];
     }
@@ -85,6 +100,9 @@
 }
 
 -(void)onWhiteboardDestroyed:(CubeWhiteBoard *)whiteboard from:(CubeUser *)from{
+    if ([whiteboard.whiteboardId isEqualToString:self.currentWhiteBoard.whiteboardId]) {
+        self.currentWhiteBoard = nil;
+    }
     if (whiteboard.maxNumber == 2) {
         [self stopTimer];
     }
@@ -98,6 +116,7 @@
 }
 
 -(void)onWhiteboardInvited:(CubeWhiteBoard *)whiteboard from:(CubeUser *)from user:(NSArray<CubeGroupMember *> *)invites{
+    // 如果在音视频通话中 , 忽略白板邀请
     BOOL isCalling = NO;
     id currentCall = [[CubeEngine sharedSingleton].mediaService currentCallWithCallType:CubeCallTypeCall|CubeCallTypeConfernce].firstObject;
     if (currentCall) {
@@ -111,6 +130,12 @@
     
     if (isCalling) {
         [[CubeEngine sharedSingleton].whiteBoardService rejectInviteWhiteBoard:whiteboard.whiteboardId andCubeId:from.cubeId];
+        return;
+    }
+    
+    // 如果在白板中 , 忽略其它的白板邀请
+    BOOL isWhiteBoardActing = [self currentWhiteboardActing];
+    if (isWhiteBoardActing) {
         return;
     }
     
@@ -150,6 +175,9 @@
 }
 
 -(void)onWhiteboardJoined:(CubeWhiteBoard *)whiteboard joinedMember:(CubeUser *)joinedMember{
+    if ([joinedMember.cubeId isEqualToString:[CubeEngine sharedSingleton].userService.currentUser.cubeId]) { //if self join
+        self.currentWhiteBoard = whiteboard;
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
         if (whiteboard.maxNumber == 2) {
             [self stopTimer];
@@ -218,4 +246,6 @@
         }
     }
 }
+
+
 @end

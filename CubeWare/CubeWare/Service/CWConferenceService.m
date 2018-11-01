@@ -102,6 +102,13 @@
 
 - (void)onConferenceInvited:(CubeConference *)conference fromUser:(CubeUser *)user andInvites:(NSArray<CubeUser *> *)invites{
 //    NSLog(@"onConference invited");
+    
+    // 如果在白板中 , 忽略音视频邀请
+    BOOL isWhiteBoardActing = [[CubeWare sharedSingleton].whiteBoardService currentWhiteboardActing];
+    if (isWhiteBoardActing) {
+        return;
+    }
+    
     for (id<CWConferenceServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWConferenceServiceDelegate)]) {
         if([obj respondsToSelector:@selector(inviteConference:andFrom:andInvites:)])
         {
