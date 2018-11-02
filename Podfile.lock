@@ -14,10 +14,10 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - CubeEngineCallKit (1.0.4):
+  - CubeEngineCallKit (1.0.5):
     - CubeEngineFoundationKit
     - CubeWebRTC
-  - CubeEngineFoundationKit (1.0.7):
+  - CubeEngineFoundationKit (1.0.8):
     - Genie
   - CubeWebRTC (1.0.1)
   - FLAnimatedImage (1.0.12)
@@ -41,8 +41,8 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking
-  - CubeEngineCallKit
-  - CubeEngineFoundationKit
+  - CubeEngineCallKit (= 1.0.5)
+  - CubeEngineFoundationKit (= 1.0.8)
   - M80AttributedLabel
   - Masonry
   - MBProgressHUD
@@ -70,8 +70,8 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  CubeEngineCallKit: 0c73742c00a015515234d7450a94ccf90ae35fcd
-  CubeEngineFoundationKit: 6d4114c390cd3be436338fe0a73f14064c4fa707
+  CubeEngineCallKit: 0e0683e61f4f3d31c3290037984c0f13d376aebf
+  CubeEngineFoundationKit: 9ee1148119641e3b1e495c9bc0ac0528e4948050
   CubeWebRTC: 5b0f59164780fccbf172351ef4bcbe2d0d247361
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   Genie: 6004c9beabe1726a4e839eb74854f00b0cb97a58
@@ -84,6 +84,6 @@ SPEC CHECKSUMS:
   WCDB: 8e90babdeb7784c569353a4bd22a66c0a175a882
   WCDBOptimizedSQLCipher: baf44493b0c7a3d49e97bc5b64a3856f6428ddd1
 
-PODFILE CHECKSUM: fe8850d610bcac41f4756770aa4db654c43c7d85
+PODFILE CHECKSUM: 259677ca6a12c6b1206e3c300696d55750c12f26
 
 COCOAPODS: 1.5.0
