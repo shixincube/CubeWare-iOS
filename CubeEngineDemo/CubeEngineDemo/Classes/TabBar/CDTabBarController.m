@@ -23,6 +23,7 @@
 #import "CWChooseContactController.h"
 #import "CDWaitView.h"
 #import "CDLoginViewController.h"
+#import <UMAnalytics/MobClick.h>
 
 @interface CDTabBarController ()<CDTabBarDelegate,CWInfoRefreshDelegate,CWConferenceServiceDelegate,CWWhiteBoardServiceDelegate,PopViewDelegate,CDConnectedViewDelegate,CDSelectContactsDelegate,CWCallServiceDelegate>
 
@@ -145,9 +146,12 @@
         loginModel.cubeToken = cubeToken;
         [CDShareInstance sharedSingleton].loginModel = loginModel;
         [self getContactData];
+        
+        [MobClick profileSignInWithPUID:cubeId];
     }
     else{
         // ....logout
+        [MobClick profileSignOff];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"currentLogin"];
         dispatch_async(dispatch_get_main_queue(), ^{
             CDLoginViewController *loginVc = [[CDLoginViewController alloc] init];

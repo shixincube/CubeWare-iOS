@@ -28,4 +28,7 @@ target 'CubeEngineDemo' do
 	pod 'WCDB'
 	pod 'CubeEngineFoundationKit' , '1.0.8'
 	pod 'CubeEngineCallKit' , '1.0.5'
+	pod 'UMCCommon'
+    pod 'UMCAnalytics'
+    pod 'UMCSecurityPlugins'
 end

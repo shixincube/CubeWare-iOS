@@ -1891,6 +1891,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H9ZBM36KF6;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
 					"$(PROJECT_DIR)/../CubeEngine/$CONFIGURATION",
 					"$(PROJECT_DIR)/../CubeEngine/",
 				);
@@ -1926,6 +1927,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H9ZBM36KF6;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
 					"$(PROJECT_DIR)/../CubeEngine/$CONFIGURATION",
 					"$(PROJECT_DIR)/../CubeEngine/",
 				);

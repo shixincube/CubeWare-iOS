@@ -1237,6 +1237,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT} $(inherited) $(SRCROOT)/FLAnimatedImage/FLAnimatedImage";
 			};
 			name = Debug;
 		};
@@ -1299,6 +1300,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT} $(inherited) $(SRCROOT)/FLAnimatedImage/FLAnimatedImage";
 			};
 			name = Release;
 		};

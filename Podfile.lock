@@ -34,6 +34,10 @@ PODS:
   - SQLiteRepairKit (1.2.1):
     - WCDBOptimizedSQLCipher (~> 1.2.0)
   - TTTAttributedLabel (2.0.0)
+  - UMCAnalytics (5.5.2):
+    - UMCCommon
+  - UMCCommon (1.5.3)
+  - UMCSecurityPlugins (1.0.6)
   - WCDB (1.0.7.5):
     - SQLiteRepairKit (~> 1.2.0)
     - WCDBOptimizedSQLCipher (~> 1.2.0)
@@ -49,6 +53,9 @@ DEPENDENCIES:
   - SDWebImage
   - SDWebImage/GIF
   - TTTAttributedLabel
+  - UMCAnalytics
+  - UMCCommon
+  - UMCSecurityPlugins
   - WCDB
 
 SPEC REPOS:
@@ -65,6 +72,9 @@ SPEC REPOS:
     - SDWebImage
     - SQLiteRepairKit
     - TTTAttributedLabel
+    - UMCAnalytics
+    - UMCCommon
+    - UMCSecurityPlugins
     - WCDB
     - WCDBOptimizedSQLCipher
 
@@ -81,9 +91,12 @@ SPEC CHECKSUMS:
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SQLiteRepairKit: 4d21bab9eff6a273f63da6815a0d1659e53f5bde
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
+  UMCAnalytics: 6654fd3c8201ff6da5c86a3ae29cd5c8436d3b7b
+  UMCCommon: 016af43c0f769feb1ae1861d65aaf2b23b89c9c7
+  UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
   WCDB: 8e90babdeb7784c569353a4bd22a66c0a175a882
   WCDBOptimizedSQLCipher: baf44493b0c7a3d49e97bc5b64a3856f6428ddd1
 
-PODFILE CHECKSUM: 259677ca6a12c6b1206e3c300696d55750c12f26
+PODFILE CHECKSUM: 954171946647e087c9d02d5b53fdc75d86417d67
 
 COCOAPODS: 1.5.0
