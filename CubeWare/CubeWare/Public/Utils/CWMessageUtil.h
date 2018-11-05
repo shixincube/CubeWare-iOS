@@ -155,4 +155,31 @@
  */
 +(NSMutableDictionary *)parseAtString:(NSString *)atString;
 
+
+/**
+ 下载文件是否存在
+
+ @param fileMessage 文件消息
+ @param addtion 文件夹  File 、Image 、Video 、Voice
+ @return 存在YES 不存在NO
+ */
++ (BOOL)isExistFile:(CubeFileMessage *)fileMessage andAddition:(NSString *)addtion;
+
+/**
+ 存储已下载文件
+
+ @param fileMessage 文件消息
+ @param addtion 文件夹  File 、Image 、Video 、Voice
+ @return 存储成功返回存储路径，失败则返回nil
+ */
++ (NSString *)saveFilePath:(CubeFileMessage *)fileMessage andAddition:(NSString *)addtion;
+
+/**
+ 获取已下载文件
+
+ @param fileMessage 文件消息
+ @param addtion  文件夹  File 、Image 、Video 、Voice
+ @return 文件路径
+ */
++ (NSString *)getFilePath:(CubeFileMessage *)fileMessage andAddition:(NSString *)addtion;
 @end

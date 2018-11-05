@@ -69,7 +69,7 @@
 #pragma mark - UITableViewDelegate
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-	id content = self.sessionArray[indexPath.row];
+	id content = [self.sessionArray objectAtIndex:indexPath.row];
 	return [[self getCellClassForContent:content] cellHeigtForContent:content inSession:nil];
 }
 
