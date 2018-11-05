@@ -989,7 +989,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSString * filePath = [CWMessageUtil saveFilePath:message andAddition:@"Voice"];;
                     voiceClipMsg.receipted = YES;
-                    voiceClipMsg.filePath = filePath;
+                    voiceClipMsg.filePath = message.filePath;
                     if(!voiceClipMsg.receiptTimestamp)
                     {
                         voiceClipMsg.receiptTimestamp = [[NSDate date] timeIntervalSince1970] * 1000;
@@ -1088,7 +1088,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSString * filePath = [CWMessageUtil saveFilePath:message andAddition:@"File"];
                 fileMsg.receipted = YES;
-                fileMsg.filePath = filePath;
+                fileMsg.filePath = message.filePath;
                 if(!fileMsg.receiptTimestamp)
                 {
                     fileMsg.receiptTimestamp = [[NSDate date] timeIntervalSince1970] * 1000;
