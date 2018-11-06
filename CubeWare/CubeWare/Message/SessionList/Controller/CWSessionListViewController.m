@@ -50,7 +50,7 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-	CWSession *content = self.sessionArray[indexPath.row];
+	CWSession *content = [self.sessionArray objectAtIndex:indexPath.row];
 	
 	Class cls = [self getCellClassForContent:content];
 	
