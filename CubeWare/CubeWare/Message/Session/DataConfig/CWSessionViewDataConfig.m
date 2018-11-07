@@ -169,8 +169,11 @@
                     UIImage  *thumbImage = [UIImage imageWithData:imageData];
                     thumbSize = thumbImage.size;
                 }else{
-                    originImageDate = [self getThumbImageDataWithImageData:imageData andMaxWidthOrHeight:1000];
-                    thumbImageData = [self getThumbImageDataWithImageData:imageData andMaxWidthOrHeight:300];
+                    // 先将原图转为jpg格式data(防止heic格式无法识别)
+                    NSData *imageData1 = UIImageJPEGRepresentation([UIImage imageWithData:imageData], 1.0);
+                    originImageDate = imageData1;
+                    originImageDate = [self getThumbImageDataWithImageData:imageData1 andMaxWidthOrHeight:1000];
+                    thumbImageData = [self getThumbImageDataWithImageData:imageData1 andMaxWidthOrHeight:300];
                     UIImage *thumbImage = [UIImage imageWithData:thumbImageData];
                     thumbSize = thumbImage.size;
                 }
