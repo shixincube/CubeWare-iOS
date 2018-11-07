@@ -27,7 +27,7 @@
 /**
  显示类型
  */
-@property (nonatomic,strong) NSString *groupType;
+@property (nonatomic,assign) CubeGroupType groupType;
 
 /**
  展示View

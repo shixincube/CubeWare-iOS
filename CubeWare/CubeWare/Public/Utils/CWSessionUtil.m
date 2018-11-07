@@ -224,19 +224,19 @@
     NSString *operate =  [header objectForKey:@"operate"];
     if ([operate isEqualToString:@"close_conference"]) {
         NSString *conferenceType = [header objectForKey:@"conferenceType"];
-        if ([conferenceType isEqualToString:CubeGroupType_Voice_Conference] || [conferenceType isEqualToString:CubeGroupType_Voice_Call])
+        if ([conferenceType isEqualToString:CubeGroupType_Voice_Conference_String] || [conferenceType isEqualToString:CubeGroupType_Voice_Call_String])
         {
             return @"多人音频会议结束";
         }
-        else if ([conferenceType isEqualToString:CubeGroupType_Video_Conference] || [conferenceType isEqualToString:CubeGroupType_Video_Call])
+        else if ([conferenceType isEqualToString:CubeGroupType_Video_Conference_String] || [conferenceType isEqualToString:CubeGroupType_Video_Call_String])
         {
             return @"多人视频会议结束";
         }
-        else if ([conferenceType isEqualToString:CubeGroupType_Share_Desktop_Conference])
+        else if ([conferenceType isEqualToString:CubeGroupType_Share_Desktop_Conference_String])
         {
             return @"桌面分享结束";
         }
-        else if ([conferenceType isEqualToString:CubeGroupType_Share_WB])
+        else if ([conferenceType isEqualToString:CubeGroupType_Share_WB_String])
         {
             return @"白板演示结束";
         }
@@ -246,19 +246,19 @@
     {
         NSString *conferenceType = [header objectForKey:@"conferenceType"];
         NSString *cubeID = [header objectForKey:@"userCube"];
-        if ([conferenceType isEqualToString:CubeGroupType_Voice_Conference]|| [conferenceType isEqualToString:CubeGroupType_Voice_Call])
+        if ([conferenceType isEqualToString:CubeGroupType_Voice_Conference_String]|| [conferenceType isEqualToString:CubeGroupType_Voice_Call_String])
         {
             return [NSString stringWithFormat:@"%@发起了多人音频会议",cubeID];
         }
-        else if ([conferenceType isEqualToString:CubeGroupType_Video_Conference]|| [conferenceType isEqualToString:CubeGroupType_Video_Call])
+        else if ([conferenceType isEqualToString:CubeGroupType_Video_Conference_String]|| [conferenceType isEqualToString:CubeGroupType_Video_Call_String])
         {
             return [NSString stringWithFormat:@"%@发起了多人视频会议",cubeID];
         }
-        else if ([conferenceType isEqualToString:CubeGroupType_Share_Desktop_Conference])
+        else if ([conferenceType isEqualToString:CubeGroupType_Share_Desktop_Conference_String])
         {
             return [NSString stringWithFormat:@"%@发起了桌面分享",cubeID];
         }
-        else if ([conferenceType isEqualToString:CubeGroupType_Share_WB])
+        else if ([conferenceType isEqualToString:CubeGroupType_Share_WB_String])
         {
             return [NSString stringWithFormat:@"%@发起了白板演示",cubeID];
         }

@@ -225,7 +225,7 @@
     selectView.delegate = self;
     selectView.groupType = view.groupType;
     selectView.conference = view.conference;
-    if ([view.groupType isEqualToString:CubeGroupType_Share_WB]) {
+    if (view.groupType ==CubeGroupType_Share_WB) {
         selectView.whiteBoard = view.whiteBoard;
     }
     NSUInteger index = self.selectedIndex;

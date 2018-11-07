@@ -44,14 +44,14 @@
 #pragma mark - CubeEngineConferenceServiceDelegate
 - (void)onConferenceCreated:(CubeConference *)conference byUser:(CubeUser *)user{
 //    NSLog(@"onConference created");
-    if ([conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference])
+    if (conference.type == CubeGroupType_Share_Desktop_Conference)
     {
 
     }
     else
     {
         // 此处通过bindGroupId来区分了
-        if ([user.cubeId isEqualToString:[CubeEngine sharedSingleton].userService.currentUser.cubeId] && ([conference.bindGroupId hasPrefix:@"g"] || [conference.type isEqualToString:CubeGroupType_Voice_Call])) {
+        if ([user.cubeId isEqualToString:[CubeEngine sharedSingleton].userService.currentUser.cubeId] && ([conference.bindGroupId hasPrefix:@"g"] || conference.type ==CubeGroupType_Voice_Call)) {
             [[CubeEngine sharedSingleton].conferenceService joinConference:conference.groupId];
         }
         
@@ -79,7 +79,7 @@
 
 -(void)onConferenceFailed:(CubeConference *)conference withError:(CubeError *)error{
 //    NSLog(@"onConference failed with error : %@",error);
-    if ([conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference])
+    if (conference.type == CubeGroupType_Share_Desktop_Conference)
     {
         for (id<CWConferenceServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWConferenceServiceDelegate)]) {
             if([obj respondsToSelector:@selector(conferenceFail: andError:)])
@@ -154,7 +154,7 @@
     
     
     
-    if ([conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference])
+    if (conference.type == CubeGroupType_Share_Desktop_Conference)
     {
         [[CubeEngine sharedSingleton].conferenceService joinConference:conference.groupId];
         for (id<CWConferenceServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWConferenceServiceDelegate)]) {
@@ -183,7 +183,7 @@
     
     
     
-    if ([conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference])
+    if (conference.type == CubeGroupType_Share_Desktop_Conference)
     {
 
         for (id<CWConferenceServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWConferenceServiceDelegate)]) {
@@ -203,15 +203,15 @@
     NSLog(@"onConnectedToConference");
     dispatch_async(dispatch_get_main_queue(), ^{
         UIView *remoteVideoView;
-        if ([conference.type isEqualToString:CubeGroupType_Video_Conference] ||
-            [conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference] ||
-            [conference.type isEqualToString:CubeGroupType_Video_Call]) {
+        if (conference.type == CubeGroupType_Video_Conference ||
+            conference.type == CubeGroupType_Share_Desktop_Conference ||
+            conference.type == CubeGroupType_Video_Call) {
             remoteVideoView = [[CubeEngine sharedSingleton].mediaService getRemoteViewForTarget:[NSString stringWithFormat:@"%d",conference.number]];
             CGRect remoteFrame = CGRectMake(0, (UIScreenHeight - (UIScreenWidth * 9/16))/2, UIScreenWidth, UIScreenWidth * 9/16);
             remoteVideoView.frame = remoteFrame;
         }
-        else if ([conference.type isEqualToString:CubeGroupType_Voice_Conference] ||
-                 [conference.type isEqualToString:CubeGroupType_Voice_Call]){
+        else if (conference.type == CubeGroupType_Voice_Conference ||
+                 conference.type == CubeGroupType_Voice_Call){
             remoteVideoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenHeight)];
             UILabel *showLable = [[UILabel alloc] init];
             showLable.text = @"正在进行多人语音通话...";
@@ -235,7 +235,7 @@
 
     
     
-    if ([conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference]) {
+    if (conference.type == CubeGroupType_Share_Desktop_Conference) {
         dispatch_async(dispatch_get_main_queue(), ^{
             UIView *remoteVideoView = [[CubeEngine sharedSingleton].mediaService getRemoteViewForTarget:[NSString stringWithFormat:@"%d",conference.number]];
             CGRect remoteFrame = CGRectMake(0, 0, UIScreenWidth, UIScreenWidth*9/16);
@@ -255,7 +255,7 @@
 }
 
 -(void)onConnecteingConference:(CubeConference *)conference{
-    if ([conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference])
+    if (conference.type == CubeGroupType_Share_Desktop_Conference)
     {
         if([[CubeEngine sharedSingleton].mediaService enableMediaType:CubeMediaTypeVideo forTarget:[NSString stringWithFormat:@"%d",conference.number]])
         {
@@ -264,9 +264,9 @@
     }
     else
     {
-        if([conference.type isEqualToString:CubeGroupType_Video_Conference]
-           || [conference.type isEqualToString:CubeGroupType_Mux_Conference]
-           ||[conference.type isEqualToString:CubeGroupType_Video_Call])
+        if(conference.type == CubeGroupType_Video_Conference
+           || conference.type == CubeGroupType_Mux_Conference
+           || conference.type == CubeGroupType_Video_Call)
         {
             if(![[CubeEngine sharedSingleton].mediaService enableMediaType:CubeMediaTypeVideo forTarget:[NSString stringWithFormat:@"%d",conference.number]])
             {
@@ -328,7 +328,7 @@
     }
     return;
     
-     if ([conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference]) {
+     if (conference.type == CubeGroupType_Share_Desktop_Conference) {
 
      }
     else

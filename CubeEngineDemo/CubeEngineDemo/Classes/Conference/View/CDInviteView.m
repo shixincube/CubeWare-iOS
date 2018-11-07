@@ -218,7 +218,7 @@ typedef enum : NSUInteger {
 {
     _conference = conference;
     self.currentInviteType = InviteView_GroupInviteTypeConference;
-    if ([conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference]) {
+    if (conference.type == CubeGroupType_Share_Desktop_Conference) {
         self.tipLabel.text = @"邀请你加入桌面分享...";
     }
     else{

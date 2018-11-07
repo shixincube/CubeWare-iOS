@@ -273,7 +273,7 @@ static CDConnectedView *instanceView = nil;
 //    self.switchCameraButton.hidden = self.currentConnectedType != ConnectedContent_ConferenceType;
 //    self.closeCameraButton.hidden = self.currentConnectedType != ConnectedContent_ConferenceType;
     
-    if ((self.currentConnectedType == ConnectedContent_ConferenceType && ([self.conference.type isEqualToString:CubeGroupType_Voice_Conference] || [self.conference.type isEqualToString:CubeGroupType_Voice_Call] || [self.conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference])) ||
+    if ((self.currentConnectedType == ConnectedContent_ConferenceType && (self.conference.type == CubeGroupType_Voice_Conference || self.conference.type == CubeGroupType_Voice_Call || self.conference.type == CubeGroupType_Share_Desktop_Conference)) ||
         self.currentConnectedType != ConnectedContent_ConferenceType || self.currentConnectedType != ConnectedContent_Call) {
         self.switchCameraButton.hidden = YES;
         self.closeCameraButton.hidden = YES;
@@ -492,18 +492,18 @@ static CDConnectedView *instanceView = nil;
 }
 
 #pragma mark - Setter Method
-- (void)setGroupType:(NSString *)groupType
+- (void)setGroupType:(CubeGroupType)groupType
 {
     _groupType = groupType;
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([groupType isEqualToString:CubeGroupType_Share_Desktop_Conference]) {
+        if (groupType == CubeGroupType_Share_Desktop_Conference) {
             self.title.text = @"屏幕分享";
         }
-        else if ([groupType isEqualToString:CubeGroupType_Voice_Conference] || [groupType isEqualToString:CubeGroupType_Voice_Call])
+        else if (groupType == CubeGroupType_Voice_Conference || groupType == CubeGroupType_Voice_Call)
         {
             self.title.text = @"多人语音";
         }
-        else if ([groupType isEqualToString:CubeGroupType_Share_WB])
+        else if (groupType ==CubeGroupType_Share_WB)
         {
             self.title.text = @"白板展示";
         }

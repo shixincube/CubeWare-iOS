@@ -66,7 +66,7 @@
 /**
 会议类型
  */
-@property (nonatomic,copy) NSString *conferenceType;
+@property (nonatomic,assign) CubeGroupType conferenceType;
 /**
  创建会话
 

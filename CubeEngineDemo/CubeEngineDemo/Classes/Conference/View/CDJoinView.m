@@ -154,18 +154,18 @@
 - (void)setConference:(CubeConference *)conference
 {
     _conference = conference;
-    if ([conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference]) {
+    if (conference.type == CubeGroupType_Share_Desktop_Conference) {
         self.title.text = [NSString stringWithFormat:@"%lu人正在屏幕分享",(unsigned long)_conference.members.count];
     }
-    else if ([conference.type isEqualToString:CubeGroupType_Voice_Conference] || [conference.type isEqualToString:CubeGroupType_Voice_Call])
+    else if (conference.type ==CubeGroupType_Voice_Conference || conference.type ==CubeGroupType_Voice_Call)
     {
         self.title.text = [NSString stringWithFormat:@"%lu人正在多人语音",(unsigned long)_conference.members.count];
     }
-    else if ([conference.type isEqualToString:CubeGroupType_Share_WB])
+    else if (conference.type ==CubeGroupType_Share_WB)
     {
         self.title.text = [NSString stringWithFormat:@"%lu人正在白板展示",(unsigned long)_conference.members.count];
     }
-    else if([conference.type isEqualToString:CubeGroupType_Video_Conference] || [conference.type isEqualToString:CubeGroupType_Video_Call])
+    else if(conference.type ==CubeGroupType_Video_Conference || conference.type ==CubeGroupType_Video_Call)
     {
         self.title.text = [NSString stringWithFormat:@"%lu人正在多人视频",(unsigned long)_conference.members.count];
     }

@@ -353,13 +353,13 @@ static NSString *connetMembersCellIdentifier = @"inviteMembers";
     NSLog(@"click answerButton");
     [[CWMessageRinging sharedSingleton] stopCallSound];
     [[CWMessageRinging sharedSingleton] stopRingBackSound];
-    if ([_conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference]) {
+    if (_conference.type == CubeGroupType_Share_Desktop_Conference) {
         [CWUtils showLoadingHud];
         //接收屏幕分享邀请的回调
 
     }else{
         BOOL result = NO;
-        BOOL videoEnable = [_conference.type isEqualToString:CubeGroupType_Video_Conference];
+        BOOL videoEnable = _conference.type == CubeGroupType_Video_Conference;
 #warning todo
 //        if([_conference.members objectForKey:@"201506"])
 //        {
