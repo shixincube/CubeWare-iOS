@@ -50,7 +50,7 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-	CWSession *content = self.sessionArray[indexPath.row];
+	CWSession *content = [self.sessionArray objectAtIndex:indexPath.row];
 	
 	Class cls = [self getCellClassForContent:content];
 	
@@ -69,7 +69,7 @@
 #pragma mark - UITableViewDelegate
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-	id content = self.sessionArray[indexPath.row];
+	id content = [self.sessionArray objectAtIndex:indexPath.row];
 	return [[self getCellClassForContent:content] cellHeigtForContent:content inSession:nil];
 }
 
