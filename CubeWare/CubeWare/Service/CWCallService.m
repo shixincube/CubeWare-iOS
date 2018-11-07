@@ -81,6 +81,11 @@
 -(void)onCallConnected:(CubeCallSession *)session from:(CubeUser *)from{
     
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (session.callDirection == CubeCallDirectionOutgoing) {
+            if (!session.callee.displayName) {
+                session.callee.displayName = from.displayName;
+            }
+        }
         [self beginTimer];
         UIView *remoteView;
         UIView *localView;

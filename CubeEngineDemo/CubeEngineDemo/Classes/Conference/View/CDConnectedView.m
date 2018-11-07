@@ -542,12 +542,30 @@ static CDConnectedView *instanceView = nil;
 -(void)setCallSession:(CubeCallSession *)callSession{
     _callSession = callSession;
     self.currentConnectedType = ConnectedContent_Call;
-    if (callSession.callDirection == CubeCallDirectionIncoming) {
-        self.title.text = callSession.callee.displayName;
+    NSString * receiverDisplayName;
+    NSString * senderDisplayName;
+    NSString *receiverCube;
+    NSString *senderCube;
+    if (callSession.callDirection == CubeCallDirectionOutgoing)
+    {
+        receiverDisplayName = callSession.callee.displayName;
+        senderDisplayName = callSession.caller.displayName;
+        receiverCube = callSession.callee.cubeId;
+        senderCube = callSession.caller.cubeId;
+
+    }else if (callSession.callDirection == CubeCallDirectionIncoming)
+    {
+        receiverDisplayName = callSession.caller.displayName;
+        senderDisplayName = callSession.callee.displayName;
+        receiverCube = callSession.caller.cubeId;
+        senderCube = callSession.callee.cubeId;
+    }
+    if ([receiverCube isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId]) {
+        self.title.text = senderDisplayName.length>0?senderDisplayName:senderCube;
     }
     else
     {
-        self.title.text = callSession.caller.displayName;
+        self.title.text = receiverDisplayName.length >0?receiverDisplayName:receiverCube;
     }
 }
 
