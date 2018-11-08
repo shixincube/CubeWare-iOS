@@ -91,6 +91,13 @@
     [self showTipView];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    //停止一切媒体播放
+    [[CubeEngine sharedSingleton].mediaService stopCurrentPlay];
+}
+
 - (void)setUI
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"bindGroupId == %@",self.session.sessionId];
