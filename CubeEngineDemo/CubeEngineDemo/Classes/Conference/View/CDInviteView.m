@@ -360,7 +360,24 @@ typedef enum : NSUInteger {
 
 
 - (void)updateConference:(CubeConference *)conference {
-    
+    if (conference.actions) {
+        BOOL kick = NO;
+        for (CubeConferenceControl *control in conference.actions) {
+            if (control.action == CubeControlActionKick && [control.controlled.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId]) {
+                kick = YES;
+                break;
+            }
+        }
+        if (kick) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if ([conference.groupId isEqualToString:self.conference.groupId])
+                {
+//                    [CWToastUtil showTextMessage:@"未接听,自动挂断会议" andDelay:1.0f];
+                    [self removeFromSuperview];
+                }
+            });
+        }
+    }
 }
 
 

@@ -252,7 +252,7 @@
 {
 //    NSLog(@"conference invite ...");
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (![from.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId]) {
+        if (![from.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId] || [from.cubeId isEqualToString:@"10000"]) {
             CDInviteView *inviteView = [[CDInviteView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
             inviteView.conference = conference;
             inviteView.invites = conference.invites;
@@ -280,6 +280,21 @@
     dispatch_async(dispatch_get_main_queue(), ^{
        [CWToastUtil showTextMessage:error.errorInfo andDelay:1.0f];
     });
+}
+
+-(void)updateConference:(CubeConference *)conference{
+    if (conference.actions) {
+        BOOL kick = NO;
+        for (CubeConferenceControl *control in conference.actions) {
+            if (control.action == CubeControlActionKick && [control.controlled.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId]) {
+                kick = YES;
+                break;
+            }
+        }
+        if (kick) {
+            
+        }
+    }
 }
 
 

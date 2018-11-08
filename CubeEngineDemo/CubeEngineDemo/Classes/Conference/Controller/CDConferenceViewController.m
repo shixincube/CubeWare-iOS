@@ -11,7 +11,7 @@
 #import "CDCreateConferenceViewController.h"
 #import "CDConferenceDetailInfoController.h"
 
-@interface CDConferenceViewController ()<CDConferenceTableViewDelegate>
+@interface CDConferenceViewController ()<CDConferenceTableViewDelegate,CWConferenceServiceDelegate>
 /**
  标题
  */
@@ -51,6 +51,8 @@
     [self.view addSubview:self.conferenceTitle];
     [self.view addSubview:self.conferenceTable];
     [self.view addSubview:self.createConferenceBtn];
+    
+    [[CWWorkerFinder defaultFinder] registerWorker:self forProtocols:@[@protocol(CWConferenceServiceDelegate)]];
     
 //    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"btn_addMore_normal"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(onClickAddItem:)];
 //    self.navigationItem.rightBarButtonItem =  addItem;
@@ -119,6 +121,21 @@
     conferenceDetailVc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:conferenceDetailVc animated:YES];
     
+}
+
+-(void)updateConference:(CubeConference *)conference{
+    if (conference.actions) {
+        BOOL kick = NO;
+        for (CubeConferenceControl *control in conference.actions) {
+            if (control.action == CubeControlActionKick && [control.controlled.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId]) {
+                kick = YES;
+                break;
+            }
+        }
+        if (kick) {
+            [self.conferenceTable syncConferenceList];
+        }
+    }
 }
 
 @end
