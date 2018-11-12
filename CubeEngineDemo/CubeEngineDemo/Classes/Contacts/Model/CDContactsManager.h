@@ -19,10 +19,29 @@
 /**
  获取群组列表
  */
-- (void)getGroupList;
+- (void)queryGroupList;
 
 /**
 获取好友列表
  */
-- (void)getFriendList;
+- (void)queryFriendList;
+
+/**
+ 获取对应群组信息
+
+ @param groupId 群组ID
+ @return 群组
+ */
+- (CubeGroup *)getGroupInfo:(NSString *)groupId;
+
+
+/**
+ 获取对应用户信息
+
+ @param cubeId 用户Cube
+ @return 用户信息
+ */
+- (CDLoginAccountModel *)getFriendInfo:(NSString *)cubeId;
+
+
 @end

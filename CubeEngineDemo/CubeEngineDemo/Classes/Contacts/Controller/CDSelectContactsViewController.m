@@ -140,7 +140,7 @@
 #pragma mark -events
 - (void)onClickSure:(UIButton *)button
 {
-    if ([self.groupType isEqualToString:CubeGroupType_Normal])
+    if (self.groupType == CubeGroupType_Normal)
     {
         if(self.group == nil)
         {
@@ -184,13 +184,13 @@
             }
         }
     }
-    else if([self.groupType isEqualToString:CubeGroupType_Voice_Conference])
+    else if(self.groupType == CubeGroupType_Voice_Conference)
     {
         //创建音频会议
         CDCreateConferenceViewController *createView = [[CDCreateConferenceViewController alloc]init];
         [self.navigationController pushViewController:createView animated:YES];
     }
-    else if ([self.groupType isEqualToString:CubeGroupType_Share_WB]){
+    else if (self.groupType == CubeGroupType_Share_WB){
         NSMutableArray *array = [NSMutableArray array];
         [array addObjectsFromArray:self.listView.selectedArray];
         [[CubeWare sharedSingleton].whiteBoardService inviteMemberInWhiteBoardId:self.whiteBoard.whiteboardId andMembers:array];
@@ -220,8 +220,7 @@
     });
     if ([from.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId])
     {   //由我创建的
-#warning fixed me
-//        [[CDContactsManager shareInstance]getGroupList];
+        [[CDContactsManager shareInstance]queryGroupList];
         dispatch_async(dispatch_get_main_queue(), ^{
             NSArray *viewControllers = self.navigationController.viewControllers;
             if ([viewControllers.lastObject isKindOfClass:[self class]]) {

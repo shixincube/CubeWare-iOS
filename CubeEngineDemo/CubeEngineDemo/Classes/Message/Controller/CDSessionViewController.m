@@ -57,9 +57,7 @@
     if (self.session.sessionType == CWSessionTypeGroup)
     {
         imageName = @"groupicon.png";
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"groupId=%@",self.session.sessionId];
-        NSArray *array = [[CDContactsManager shareInstance].grouplist filteredArrayUsingPredicate:predicate];
-        CubeGroup *model = array.firstObject;
+        CubeGroup *model = [[CDContactsManager shareInstance] getGroupInfo:self.session.sessionId];
         if(model)
         {
             self.title = model.displayName;
@@ -68,9 +66,7 @@
     else
     {
         imageName = @"usericon.png";
-         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"cubeId=%@",self.session.sessionId];
-        NSArray *array = [[CDShareInstance sharedSingleton].friendList filteredArrayUsingPredicate:predicate];
-        CDLoginAccountModel *model = array.firstObject;
+        CDLoginAccountModel *model = [[CDContactsManager shareInstance]getFriendInfo:self.session.sessionId];
         if (model) {
             self.title = model.displayName;
         }
@@ -79,7 +75,7 @@
     self.navigationItem.rightBarButtonItem =  moreItem;
     self.navigationItem.leftBarButtonItem = backItem;
     
-    [[CWWorkerFinder defaultFinder] registerWorker:self forProtocols:@[@protocol(CWConferenceServiceDelegate)]];
+    [[CWWorkerFinder defaultFinder] registerWorker:self forProtocols:@[@protocol(CWConferenceServiceDelegate),@protocol(CWGroupServiceDelegate)]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -95,6 +91,13 @@
     [self showTipView];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    //停止一切媒体播放
+    [[CubeEngine sharedSingleton].mediaService stopCurrentPlay];
+}
+
 - (void)setUI
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"bindGroupId == %@",self.session.sessionId];
@@ -103,16 +106,16 @@
     {
         CubeGroup *group = result.firstObject;
         TipShowType showtype;
-        if ([group.type isEqualToString:CubeGroupType_Voice_Conference]) {
+        if (group.type == CubeGroupType_Voice_Conference) {
             showtype = TipShowVoiceConferece;
             self.conference = result.firstObject;
         }
-        else if ([group.type isEqualToString:CubeGroupType_Video_Conference])
+        else if (group.type ==CubeGroupType_Video_Conference)
         {
             showtype = TipShowVideoConference;
             self.conference = result.firstObject;
         }
-        else if ([group.type isEqualToString:CubeGroupType_Share_Desktop_Conference])
+        else if (group.type ==CubeGroupType_Share_Desktop_Conference)
         {
             showtype = TipShowShareDesktop;
             self.conference = result.firstObject;
@@ -130,23 +133,23 @@
 
 
 - (void)showTipView{
-    [[CubeEngine sharedSingleton].conferenceService queryConferenceWithConferenceType:@[CubeGroupType_Voice_Call,CubeGroupType_Video_Call,CubeGroupType_Share_Desktop_Conference] groupIds:@[self.session.sessionId] completion:^(NSArray *conferences) {
+    [[CubeEngine sharedSingleton].conferenceService queryConferenceWithConferenceType:@[CubeGroupType_Voice_Call_String,CubeGroupType_Video_Call_String,CubeGroupType_Share_Desktop_Conference_String] groupIds:@[self.session.sessionId] completion:^(NSArray *conferences) {
         if (conferences && conferences.count > 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 CubeConference *conference = conferences.firstObject;
                 if(conference && conference.members.count != 0)
                 {
                     TipShowType showtype;
-                    if ([conference.type isEqualToString:CubeGroupType_Voice_Call]) {
+                    if (conference.type == CubeGroupType_Voice_Call) {
                         showtype = TipShowVoiceConferece;
                         self.conference = conference;
                     }
-                    else if ([conference.type isEqualToString:CubeGroupType_Video_Call])
+                    else if (conference.type == CubeGroupType_Video_Call)
                     {
                         showtype = TipShowVideoConference;
                         self.conference = conference;
                     }
-                    else if ([conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference])
+                    else if (conference.type == CubeGroupType_Share_Desktop_Conference)
                     {
                         showtype = TipShowShareDesktop;
                         self.conference = conference;
@@ -210,6 +213,13 @@
     }
 }
 
-
+- (void)updateGroup:(CubeGroup *)group from:(CubeUser *)from
+{
+    if ([group.groupId isEqualToString:self.session.sessionId]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.title = group.displayName;
+        });
+    }
+}
 
 @end

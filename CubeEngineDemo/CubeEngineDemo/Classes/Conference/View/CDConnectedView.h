@@ -27,14 +27,17 @@
 /**
  显示类型
  */
-@property (nonatomic,strong) NSString *groupType;
+@property (nonatomic,assign) CubeGroupType groupType;
 
 /**
  展示View
  */
 @property (nonatomic,strong) UIView *showView;
 
-
+/**
+ 白板展示View
+ */
+@property (nonatomic,strong) UIView *whiteBoarView;
 ///**
 // 屏幕共享
 // */

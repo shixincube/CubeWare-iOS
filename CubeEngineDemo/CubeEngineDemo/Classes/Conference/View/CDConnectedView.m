@@ -154,10 +154,15 @@ static CDConnectedView *instanceView = nil;
     for (UIView *subView in self.inviteMemberView.subviews) {
         [subView removeFromSuperview];
     }
+    for (UIView *subView in self.whiteBoarView.subviews) {
+        [subView removeFromSuperview];
+    }
 }
 
 - (void)initializeAppearance{
     self.backgroundColor = KBlackColor;
+    [self addSubview:self.showView];
+    [self addSubview:self.whiteBoarView];
     [self addSubview:self.title];
     //[self addSubview:self.narrowButon];
     [self addSubview:self.joinTitle];
@@ -166,13 +171,13 @@ static CDConnectedView *instanceView = nil;
     [self addSubview:self.joinMemberView];
     [self addSubview:self.inviteMemberView];
     [self addSubview:self.hangupButton];
-    [self addSubview:self.showView];
+
     
     [self addSubview:self.closeCameraButton];
     [self addSubview:self.switchCameraButton];
     [self addSubview:self.handfreeButton];
     [self addSubview:self.muteButton];
-    [self addSubview:self.self.whiteBoardToolView];
+    [self addSubview:self.whiteBoardToolView];
     [self setUI];
     
     [[CWWorkerFinder defaultFinder] registerWorker:self forProtocols:@[@protocol(CWConferenceServiceDelegate),@protocol(CWWhiteBoardServiceDelegate),@protocol(CWCallServiceDelegate)]];
@@ -224,14 +229,22 @@ static CDConnectedView *instanceView = nil;
         make.left.mas_equalTo(self.joinTitle.mas_left);
     }];
     [self.showView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
-        make.top.mas_equalTo(self.inviteMemberView.mas_bottom).offset(20);
+        make.left.mas_equalTo(self.mas_left);
+        make.centerY.equalTo(self.mas_centerY);
         make.width.mas_equalTo(@(kScreenWidth));
-        make.height.mas_equalTo(@(kScreenWidth * 9/16));
+        make.height.mas_equalTo(@(kScreenHeight));
+    }];
+    [self.whiteBoarView  mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.mas_left);
+        make.centerY.equalTo(self.mas_centerY);
+        make.width.mas_equalTo(@(kScreenWidth));
+        make.height.mas_equalTo(@(kScreenWidth*9/16));
     }];
     [self.whiteBoardToolView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.right.bottom.equalTo(self.showView);
+        make.right.equalTo(self.mas_right);
         make.width.mas_equalTo(25);
+        make.centerY.equalTo(self.mas_centerY);
+        make.height.mas_equalTo(kScreenWidth * 9/16);
     }];
 
     [self.hangupButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -260,8 +273,8 @@ static CDConnectedView *instanceView = nil;
 //    self.switchCameraButton.hidden = self.currentConnectedType != ConnectedContent_ConferenceType;
 //    self.closeCameraButton.hidden = self.currentConnectedType != ConnectedContent_ConferenceType;
     
-    if ((self.currentConnectedType == ConnectedContent_ConferenceType && ([self.conference.type isEqualToString:CubeGroupType_Voice_Conference] || [self.conference.type isEqualToString:CubeGroupType_Voice_Call] || [self.conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference])) ||
-        self.currentConnectedType != ConnectedContent_ConferenceType) {
+    if ((self.currentConnectedType == ConnectedContent_ConferenceType && (self.conference.type == CubeGroupType_Voice_Conference || self.conference.type == CubeGroupType_Voice_Call || self.conference.type == CubeGroupType_Share_Desktop_Conference)) ||
+        self.currentConnectedType != ConnectedContent_ConferenceType || self.currentConnectedType != ConnectedContent_Call) {
         self.switchCameraButton.hidden = YES;
         self.closeCameraButton.hidden = YES;
     }
@@ -282,11 +295,20 @@ static CDConnectedView *instanceView = nil;
 
 -(UIView *)showView{
     if (!_showView) {
-        _showView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenWidth * 9/16)];
+        _showView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
         _showView.backgroundColor = KClearColor;
     }
     return _showView;
 }
+
+-(UIView *)whiteBoarView{
+    if (!_whiteBoarView) {
+        _whiteBoarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenWidth*9/16)];
+        _whiteBoarView.backgroundColor = KClearColor;
+    }
+    return _whiteBoarView;
+}
+
 
 - (UIButton *)narrowButon
 {
@@ -462,7 +484,7 @@ static CDConnectedView *instanceView = nil;
 
 -(CDWhiteBoardToolView *)whiteBoardToolView{
     if (!_whiteBoardToolView) {
-        _whiteBoardToolView = [[CDWhiteBoardToolView alloc] initWithFrame:CGRectMake(0, 0, 25, self.showView.height)];
+        _whiteBoardToolView = [[CDWhiteBoardToolView alloc] initWithFrame:CGRectMake(0, 0, 25, kScreenWidth*9/16)];
         _whiteBoardToolView.backgroundColor = KWhiteColor;
         _whiteBoardToolView.delegate = self;
     }
@@ -470,18 +492,18 @@ static CDConnectedView *instanceView = nil;
 }
 
 #pragma mark - Setter Method
-- (void)setGroupType:(NSString *)groupType
+- (void)setGroupType:(CubeGroupType)groupType
 {
     _groupType = groupType;
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([groupType isEqualToString:CubeGroupType_Share_Desktop_Conference]) {
+        if (groupType == CubeGroupType_Share_Desktop_Conference) {
             self.title.text = @"屏幕分享";
         }
-        else if ([groupType isEqualToString:CubeGroupType_Voice_Conference] || [groupType isEqualToString:CubeGroupType_Voice_Call])
+        else if (groupType == CubeGroupType_Voice_Conference || groupType == CubeGroupType_Voice_Call)
         {
             self.title.text = @"多人语音";
         }
-        else if ([groupType isEqualToString:CubeGroupType_Share_WB])
+        else if (groupType ==CubeGroupType_Share_WB)
         {
             self.title.text = @"白板展示";
         }
@@ -520,12 +542,30 @@ static CDConnectedView *instanceView = nil;
 -(void)setCallSession:(CubeCallSession *)callSession{
     _callSession = callSession;
     self.currentConnectedType = ConnectedContent_Call;
-    if (callSession.callDirection == CubeCallDirectionIncoming) {
-        self.title.text = callSession.callee.displayName;
+    NSString * receiverDisplayName;
+    NSString * senderDisplayName;
+    NSString *receiverCube;
+    NSString *senderCube;
+    if (callSession.callDirection == CubeCallDirectionOutgoing)
+    {
+        receiverDisplayName = callSession.callee.displayName;
+        senderDisplayName = callSession.caller.displayName;
+        receiverCube = callSession.callee.cubeId;
+        senderCube = callSession.caller.cubeId;
+
+    }else if (callSession.callDirection == CubeCallDirectionIncoming)
+    {
+        receiverDisplayName = callSession.caller.displayName;
+        senderDisplayName = callSession.callee.displayName;
+        receiverCube = callSession.caller.cubeId;
+        senderCube = callSession.callee.cubeId;
+    }
+    if ([receiverCube isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId]) {
+        self.title.text = senderDisplayName.length>0?senderDisplayName:senderCube;
     }
     else
     {
-        self.title.text = callSession.caller.displayName;
+        self.title.text = receiverDisplayName.length >0?receiverDisplayName:receiverCube;
     }
 }
 
@@ -700,12 +740,20 @@ static CDConnectedView *instanceView = nil;
     if (![quitMember.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId]) {
         self.whiteBoard = whiteBoard;
     }
+    else
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+        if ([self.whiteBoard.whiteboardId isEqualToString:whiteBoard.whiteboardId]) {
+            [instanceView remove];
+        }
+        });
+    }
 }
 
 -(void)whiteBoardDestroy:(CubeWhiteBoard *)whiteBoard from:(CubeUser *)fromUser{
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([self.whiteBoard.whiteboardId isEqualToString:whiteBoard.whiteboardId]) {
-            [self removeFromSuperview];
+             [instanceView remove];
         }
     });
 }
@@ -739,7 +787,6 @@ static CDConnectedView *instanceView = nil;
 #pragma mark - CWConferenceServiceDelegate
 
 -(void)connectedConference:(CubeConference *)conference andView:(UIView *)view{
-    NSLog(@"conference connected..");
 }
 
 - (void)joinConference:(CubeConference *)conference andJoin:(CubeUser *)joiner
@@ -761,7 +808,7 @@ static CDConnectedView *instanceView = nil;
     dispatch_async(dispatch_get_main_queue(), ^{
         self.conference = conference;
         if ([quiter.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId]) {
-            [self removeFromSuperview];
+            [instanceView remove];
         }
     });
 }
@@ -782,16 +829,18 @@ static CDConnectedView *instanceView = nil;
 - (void)destroyConference:(CubeConference *)conference byUser:(CubeUser *)user
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [CWToastUtil showTextMessage:@"会议被销毁" andDelay:1.0f];
-        [self removeFromSuperview];
+//        [CWToastUtil showTextMessage:@"会议被销毁" andDelay:1.0f];
+        [instanceView remove];
     });
 }
 
 #pragma mark - CWCallServiceDelegate
 -(void)callEnded:(CubeCallSession *)callSession from:(CubeUser *)from{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [instanceView remove];
-    });
+    if (![[CubeWare sharedSingleton].whiteBoardService currentWhiteboardActing]) { //当前如果没进行白板演示
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [instanceView remove];
+        });
+    }
 }
 
 

@@ -11,6 +11,7 @@
 #import "CubeWare.h"
 
 #import "CDLoginViewController.h"
+#import <UMCommon/UMCommon.h>
 
 @interface AppDelegate ()
 
@@ -22,7 +23,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Override point for customization after application launch.
 	self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    
+    [UMConfigure initWithAppkey:@"5bcedc17b465f5d62d000197" channel:@"GitHub_iOS"];
     NSDictionary *loginInfoDic = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentLogin"];
     if (loginInfoDic) {
         
@@ -41,6 +42,7 @@
     }
 
 	[self.window makeKeyAndVisible];
+    
     
 	return YES;
 }

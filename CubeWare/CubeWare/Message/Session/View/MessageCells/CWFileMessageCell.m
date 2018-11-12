@@ -31,7 +31,7 @@
     if(self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])
     {
         [self initView];
-        [[CWWorkerFinder defaultFinder] registerWorker:self forProtocols:@[@protocol(CWFileRefreshDelegate)]];
+        [[CWWorkerFinder defaultFinder] registerWorker:self forProtocols:@[@protocol(CWFileServiceDelegate)]];
     }
     return self;
 }
@@ -75,6 +75,7 @@
     _statusBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_statusBtn setTitleColor:CWRGBColor(69, 146, 249, 1) forState:UIControlStateNormal];
     _statusBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [_statusBtn addTarget:self action:@selector(downLoadBtnAction) forControlEvents:UIControlEventTouchUpInside];
     [self.bubbleView addSubview:_statusBtn];
     [_statusBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY .mas_equalTo(self.filesizeLabel);
@@ -102,7 +103,12 @@
         make.width.mas_equalTo(220);
     }];
 }
-
+#pragma mark - Action
+- (void)downLoadBtnAction{
+    if(self.delegate && [self.delegate respondsToSelector:@selector(didClickedBubbleOnCell:)]){
+        [self.delegate didClickedBubbleOnCell:self];
+    }
+}
 #pragma mark - content protocol
 
 +(CGFloat)bubbleHeightForContent:(id)content inSession:(CWSession *)session{
@@ -119,25 +125,25 @@
     self.statusBtn.enabled = msg.filePath ? NO : YES;
 }
 #pragma mark - CWFileRefreshDelegate
-
-- (void)fileMessageDownloading:(CubeMessageEntity *)message withProcessed:(long long)processed withTotal:(long long)total{
+- (void)onFileDownloadProgress:(CubeFileMessage *)message progress:(NSProgress *)progress
+{
     if(self.currentContent.SN == message.SN){
-        CubeFileMessage * fileMsg = (CubeFileMessage *)self.currentContent;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self showProgress:YES];
-            self.progressLineView.progress = (CGFloat)processed/ (CGFloat)total;
+            self.progressLineView.progress = (CGFloat)progress.completedUnitCount/progress.totalUnitCount;
         });
-        
     }
 }
--(void)fileMessageDownLoadComplete:(CubeMessageEntity *)message{
+
+- (void)onFileDownloadSuccess:(CubeFileMessage *)message
+{
     if(self.currentContent.SN == message.SN){
         dispatch_async(dispatch_get_main_queue(), ^{
             [self showProgress:NO];
         });
-        
     }
 }
+
 
 #pragma mark - private Medths
 - (void)showProgress:(BOOL)isShow{

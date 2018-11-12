@@ -25,7 +25,7 @@
  ------------------------------
  */
 @property (nonatomic, strong) NSMutableDictionary *workerRegistrationForm;
-
+@property (nonatomic, strong)  dispatch_queue_t queue;
 @end
 
 @implementation CWWorkerFinder
@@ -42,10 +42,18 @@
     return finder;
 }
 
+- (instancetype)init{
+    if(self =[super init]){
+        _queue = dispatch_queue_create("workerFinderQueue", DISPATCH_QUEUE_SERIAL);
+    }
+    return self;
+}
+
+
 -(void)registerWorker:(id)worker forProtocols:(NSArray<Protocol *> *)protocols{
     if(!worker || !protocols.count)
         return;
-    
+     dispatch_sync(_queue, ^{
     for (Protocol *p in protocols) {
         NSPointerArray *workerArray = [self workerArrayForProtocol:p];
         if([[workerArray allObjects] indexOfObject:worker] == NSNotFound)
@@ -53,10 +61,15 @@
             [workerArray addPointer:(__bridge void * _Nullable)(worker)];
         }
     }
+     });
 }
 
 -(NSArray *)findWorkerForProtocol:(Protocol *)protocol{
-    return [[self workerArrayForProtocol:protocol] allObjects];
+    __block NSArray * arr = nil;
+    dispatch_sync(_queue, ^{
+        arr = [[[self workerArrayForProtocol:protocol] allObjects] copy];
+    });
+    return arr;
 }
 
 #pragma mark - private

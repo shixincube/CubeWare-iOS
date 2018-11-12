@@ -23,6 +23,7 @@
 #import "CWChooseContactController.h"
 #import "CDWaitView.h"
 #import "CDLoginViewController.h"
+#import <UMAnalytics/MobClick.h>
 
 @interface CDTabBarController ()<CDTabBarDelegate,CWInfoRefreshDelegate,CWConferenceServiceDelegate,CWWhiteBoardServiceDelegate,PopViewDelegate,CDConnectedViewDelegate,CDSelectContactsDelegate,CWCallServiceDelegate>
 
@@ -145,9 +146,12 @@
         loginModel.cubeToken = cubeToken;
         [CDShareInstance sharedSingleton].loginModel = loginModel;
         [self getContactData];
+        
+        [MobClick profileSignInWithPUID:cubeId];
     }
     else{
         // ....logout
+        [MobClick profileSignOff];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"currentLogin"];
         dispatch_async(dispatch_get_main_queue(), ^{
             CDLoginViewController *loginVc = [[CDLoginViewController alloc] init];
@@ -221,7 +225,7 @@
     selectView.delegate = self;
     selectView.groupType = view.groupType;
     selectView.conference = view.conference;
-    if ([view.groupType isEqualToString:CubeGroupType_Share_WB]) {
+    if (view.groupType ==CubeGroupType_Share_WB) {
         selectView.whiteBoard = view.whiteBoard;
     }
     NSUInteger index = self.selectedIndex;
@@ -248,7 +252,7 @@
 {
 //    NSLog(@"conference invite ...");
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (![from.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId]) {
+        if (![from.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId] || [from.cubeId isEqualToString:@"10000"]) {
             CDInviteView *inviteView = [[CDInviteView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
             inviteView.conference = conference;
             inviteView.invites = conference.invites;
@@ -278,6 +282,21 @@
     });
 }
 
+-(void)updateConference:(CubeConference *)conference{
+    if (conference.actions) {
+        BOOL kick = NO;
+        for (CubeConferenceControl *control in conference.actions) {
+            if (control.action == CubeControlActionKick && [control.controlled.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId]) {
+                kick = YES;
+                break;
+            }
+        }
+        if (kick) {
+            
+        }
+    }
+}
+
 
 #pragma mark - CWWhiteBoardServiceDelegate
 -(void)whiteBoardCreate:(CubeWhiteBoard *)whiteBoard from:(CubeUser *)fromUser andView:(UIView *)view{
@@ -293,7 +312,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             CDConnectedView *connectedView = [CDConnectedView shareInstance];
             connectedView.whiteBoard = whiteBoard;
-            [connectedView.showView addSubview:view];
+            [connectedView.whiteBoarView addSubview:view];
             [connectedView show];
             
             if (inviteCubeIds.count) {
@@ -367,7 +386,7 @@
     });
 }
 
--(void)callConnected:(CubeCallSession *)callSession from:(CubeUser *)from andView:(UIView *)view{
+-(void)callConnected:(CubeCallSession *)callSession from:(CubeUser *)from andRemoteView:(UIView *)remoteView andLocalView:(UIView *)localView{
     dispatch_async(dispatch_get_main_queue(), ^{
 //        CDConnectedView *connectedView = [CDConnectedView shareInstance];
 //        [connectedView.showView addSubview:view];
@@ -392,12 +411,8 @@
 #pragma mark - Get data
 - (void)getContactData
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[CDContactsManager shareInstance] getGroupList];
-    });
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[CDContactsManager shareInstance] getFriendList];
-    });
+    [[CDContactsManager shareInstance] queryGroupList];
+    [[CDContactsManager shareInstance] queryFriendList];
 }
 
 #pragma mark -

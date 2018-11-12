@@ -9,7 +9,30 @@
 #import "CWWhiteBoardService.h"
 #import "CubeWareGlobalMacro.h"
 #import "CWMessageUtil.h"
+@interface CWWhiteBoardService()
 
+/**
+ 超时定时器，超过1分钟就发送挂断请求
+ */
+@property (nonatomic,strong) NSTimer *waitTimer;
+/**
+ 通话时间
+ */
+@property (nonatomic ,assign) long long timeCount;
+
+/**
+ 白板Id
+ */
+@property (nonatomic,strong) NSString *whiteBoardId;
+
+
+/**
+ 正在演示中的白板..
+ */
+@property (nonatomic,strong) CubeWhiteBoard *currentWhiteBoard;
+
+
+@end
 @implementation CWWhiteBoardService
 
 #pragma mark - api
@@ -34,14 +57,22 @@
     [[CubeEngine sharedSingleton].whiteBoardService rejectInviteWhiteBoard:whiteboardId andCubeId:cubeId];
 }
 
+-(BOOL)currentWhiteboardActing{
+    return self.currentWhiteBoard ? YES : NO;
+}
+
 
 #pragma mark - CubeWhiteBoardServiceDelegate
 
 -(void)onWhiteboardCreated:(CubeWhiteBoard *)whiteboard from:(CubeUser *)from{
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (whiteboard.maxNumber == 2) {
+            //p2p
+            self.whiteBoardId = whiteboard.whiteboardId;
+            [self beginTimer];
+        }
         UIView *whiteBoardView = [[CubeEngine sharedSingleton].whiteBoardService getView];
-        CGRect remoteFrame = CGRectMake(0, 0, UIScreenWidth, UIScreenWidth*9/16);
-        whiteBoardView.frame = remoteFrame;
+        CGRect remoteFrame = CGRectMake( 0,0, UIScreenWidth, UIScreenWidth*9/16);
         for (id<CWWhiteBoardServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWWhiteBoardServiceDelegate)]) {
             if([obj respondsToSelector:@selector(whiteBoardCreate:from:andView:)])
             {
@@ -53,6 +84,12 @@
 }
 
 -(void)onWhiteboardQuited:(CubeWhiteBoard *)whiteboard quitedMember:(CubeUser *)quitedMember{
+    if ([whiteboard.whiteboardId isEqualToString:self.currentWhiteBoard.whiteboardId]) {
+        self.currentWhiteBoard = nil;
+    }
+    if (whiteboard.maxNumber == 2) {
+        [self stopTimer];
+    }
     for (id<CWWhiteBoardServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWWhiteBoardServiceDelegate)]) {
         if([obj respondsToSelector:@selector(whiteBoardQuit:quitMember:)])
         {
@@ -63,6 +100,12 @@
 }
 
 -(void)onWhiteboardDestroyed:(CubeWhiteBoard *)whiteboard from:(CubeUser *)from{
+    if ([whiteboard.whiteboardId isEqualToString:self.currentWhiteBoard.whiteboardId]) {
+        self.currentWhiteBoard = nil;
+    }
+    if (whiteboard.maxNumber == 2) {
+        [self stopTimer];
+    }
     for (id<CWWhiteBoardServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWWhiteBoardServiceDelegate)]) {
         if([obj respondsToSelector:@selector(whiteBoardDestroy:from:)])
         {
@@ -73,6 +116,29 @@
 }
 
 -(void)onWhiteboardInvited:(CubeWhiteBoard *)whiteboard from:(CubeUser *)from user:(NSArray<CubeGroupMember *> *)invites{
+    // 如果在音视频通话中 , 忽略白板邀请
+    BOOL isCalling = NO;
+    id currentCall = [[CubeEngine sharedSingleton].mediaService currentCallWithCallType:CubeCallTypeCall|CubeCallTypeConfernce].firstObject;
+    if (currentCall) {
+        for (CubeGroupMember *member in invites) {
+            if ([member.cubeId isEqualToString:[CubeEngine sharedSingleton].userService.currentUser.cubeId]) {
+                isCalling = YES;
+                break;
+            }
+        }
+    }
+    
+    if (isCalling) {
+        [[CubeEngine sharedSingleton].whiteBoardService rejectInviteWhiteBoard:whiteboard.whiteboardId andCubeId:from.cubeId];
+        return;
+    }
+    
+    // 如果在白板中 , 忽略其它的白板邀请
+    BOOL isWhiteBoardActing = [self currentWhiteboardActing];
+    if (isWhiteBoardActing) {
+        return;
+    }
+    
     for (id<CWWhiteBoardServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWWhiteBoardServiceDelegate)]) {
         if([obj respondsToSelector:@selector(whiteBoardInvite:from:invites:)])
         {
@@ -109,7 +175,13 @@
 }
 
 -(void)onWhiteboardJoined:(CubeWhiteBoard *)whiteboard joinedMember:(CubeUser *)joinedMember{
+    if ([joinedMember.cubeId isEqualToString:[CubeEngine sharedSingleton].userService.currentUser.cubeId]) { //if self join
+        self.currentWhiteBoard = whiteboard;
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (whiteboard.maxNumber == 2) {
+            [self stopTimer];
+        }
         UIView *whiteBoardView = [[CubeEngine sharedSingleton].whiteBoardService getView];
         CGRect remoteFrame = CGRectMake(0, 0, UIScreenWidth, UIScreenWidth*9/16);
         whiteBoardView.frame = remoteFrame;
@@ -123,7 +195,7 @@
 }
 
 -(void)onWhiteboardFailed:(CubeWhiteBoard *)whiteboard error:(CubeError *)error{
-    NSLog(@"error = %@",error.errorInfo);
+    [self stopTimer];
     for (id<CWWhiteBoardServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWWhiteBoardServiceDelegate)]) {
         if([obj respondsToSelector:@selector(whiteBoardFailed:error:)])
         {
@@ -133,10 +205,37 @@
 }
 
 #pragma mark - privite method
+- (void)beginTimer
+{
+    //开启一个通话计时器
+    if (self.waitTimer) {
+        [self.waitTimer invalidate];
+        self.waitTimer = nil;
+    }
+    self.waitTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(openTimer:) userInfo:nil repeats:YES];
+    self.timeCount = 0;
+}
 
+- (void)openTimer:(NSTimer *)timer
+{
+     self.timeCount ++;
+    if (self.timeCount == 60)//60s 一对一白板未接听后 主动挂断
+    {
+        [[CubeWare sharedSingleton].whiteBoardService quitWhiteBoard:self.whiteBoardId];
+    }
+}
+
+- (void)stopTimer
+{
+    self.whiteBoardId = nil;
+    if (self.waitTimer) {
+        [self.waitTimer invalidate];
+        self.waitTimer = nil;
+    }
+
+}
 - (void)insertCustomMessage:(CubeWhiteBoard *)whiteboard andUser:(CubeUser *)user andContent:(NSString *)content
 {
-    NSLog(@"whiteboard = %@", [whiteboard toDictionary]);
     if(whiteboard && whiteboard.maxNumber == 2)
     {
         CubeCustomMessage *customMessage = [CWMessageUtil customMessageWithWhiteBoard:whiteboard fromUser:user andContent:content];
@@ -147,4 +246,6 @@
         }
     }
 }
+
+
 @end

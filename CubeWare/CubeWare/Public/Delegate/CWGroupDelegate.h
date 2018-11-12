@@ -59,5 +59,10 @@
  @param error 错误
  */
 - (void)groupFail:(CubeError *)error;
+
+/**
+ 更新群组列表
+ */
+- (void)updateGrouplist;
 @end
 

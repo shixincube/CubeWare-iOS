@@ -14,6 +14,7 @@
 #import "CWActionSheet.h"
 #import "CDHudUtil.h"
 #import "CDAvatarViewController.h"
+#import "CDContactsManager.h"
 @interface CDGroupInfoViewController ()<CDGroupInfoDelegate,CWGroupServiceDelegate,CWActionSheetDelegate>
 
 /**
@@ -153,7 +154,6 @@
 }
 - (void)addGroupMember:(CubeGroup *)group
 {
-    
     CDSelectContactsViewController *selectView = [[CDSelectContactsViewController alloc]init];
     selectView.dataArray = [CDShareInstance sharedSingleton].friendList;
     selectView.groupType = CubeGroupType_Normal;
@@ -206,6 +206,7 @@
     //修改成功
     self.group = group;
     self.infoTableView.group = group;
+    [[CDContactsManager shareInstance]queryGroupList];
 }
 
 - (void)actionSheet:(CWActionSheet *)actionSheet didClickedButtonAtIndex:(NSInteger)buttonIndex

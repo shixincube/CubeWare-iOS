@@ -218,7 +218,7 @@ typedef enum : NSUInteger {
 {
     _conference = conference;
     self.currentInviteType = InviteView_GroupInviteTypeConference;
-    if ([conference.type isEqualToString:CubeGroupType_Share_Desktop_Conference]) {
+    if (conference.type == CubeGroupType_Share_Desktop_Conference) {
         self.tipLabel.text = @"邀请你加入桌面分享...";
     }
     else{
@@ -360,7 +360,24 @@ typedef enum : NSUInteger {
 
 
 - (void)updateConference:(CubeConference *)conference {
-    
+    if (conference.actions) {
+        BOOL kick = NO;
+        for (CubeConferenceControl *control in conference.actions) {
+            if (control.action == CubeControlActionKick && [control.controlled.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId]) {
+                kick = YES;
+                break;
+            }
+        }
+        if (kick) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if ([conference.groupId isEqualToString:self.conference.groupId])
+                {
+//                    [CWToastUtil showTextMessage:@"未接听,自动挂断会议" andDelay:1.0f];
+                    [self removeFromSuperview];
+                }
+            });
+        }
+    }
 }
 
 
@@ -408,7 +425,7 @@ typedef enum : NSUInteger {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self removeFromSuperview];
             CDConnectedView *connectedView = [CDConnectedView shareInstance];
-            [connectedView.showView addSubview:view];
+            [connectedView.whiteBoarView addSubview:view];
             connectedView.whiteBoard = whiteBoard;
             [connectedView show];
         });
@@ -427,11 +444,14 @@ typedef enum : NSUInteger {
     
 }
 
--(void)callConnected:(CubeCallSession *)callSession from:(CubeUser *)from andView:(UIView *)view{
+-(void)callConnected:(CubeCallSession *)callSession from:(CubeUser *)from andRemoteView:(UIView *)remoteView andLocalView:(UIView *)localView{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self removeFromSuperview];
         CDConnectedView *connectedView = [CDConnectedView shareInstance];
-        [connectedView.showView addSubview:view];
+        [connectedView.showView addSubview:remoteView];
+        if (localView) {
+            [connectedView.showView addSubview:localView];
+        }
         connectedView.callSession = callSession;
         [connectedView show];
     });

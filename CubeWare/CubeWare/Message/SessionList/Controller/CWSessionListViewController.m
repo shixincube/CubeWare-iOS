@@ -50,7 +50,7 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-	CWSession *content = self.sessionArray[indexPath.row];
+	CWSession *content = [self.sessionArray objectAtIndex:indexPath.row];
 	
 	Class cls = [self getCellClassForContent:content];
 	
@@ -69,7 +69,7 @@
 #pragma mark - UITableViewDelegate
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-	id content = self.sessionArray[indexPath.row];
+	id content = [self.sessionArray objectAtIndex:indexPath.row];
 	return [[self getCellClassForContent:content] cellHeigtForContent:content inSession:nil];
 }
 
@@ -124,10 +124,10 @@
                 locateIndex = self.sessionArray.count;
                 [self.sessionArray addObject:s];
                 [self.sessionList insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:locateIndex inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-				if(![[CubeWare sharedSingleton].infoManager userInfoForCubeId:s.sessionId inSession:nil])
-				{
-					[needBaseInfoSessions addObject:s.sessionId];
-				}
+//                if(![[CubeWare sharedSingleton].infoManager userInfoForCubeId:s.sessionId inSession:nil])
+//                {
+//                    [needBaseInfoSessions addObject:s.sessionId];
+//                }
             }
 			else
 			{

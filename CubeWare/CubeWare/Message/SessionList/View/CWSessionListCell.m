@@ -218,23 +218,23 @@
 	self.toppedImageView.hidden = !isTop;
 }
 
-- (void)setConferenceType:(NSString *)conferenceType
+- (void)setConferenceType:(CubeGroupType)conferenceType
 {
-    if (conferenceType && ([conferenceType isEqualToString:CubeGroupType_Voice_Conference] || [conferenceType isEqualToString:CubeGroupType_Voice_Call])) {
+    if (conferenceType && (conferenceType == CubeGroupType_Voice_Conference || conferenceType == CubeGroupType_Voice_Call)) {
         self.conferenceView.hidden = NO;
         [self.conferenceView setImage:[UIImage imageNamed:@"isVoice"]];
     }
-    else if (conferenceType && ([conferenceType isEqualToString:CubeGroupType_Video_Conference] || [conferenceType isEqualToString:CubeGroupType_Video_Call] ) )
+    else if (conferenceType && (conferenceType == CubeGroupType_Video_Conference || conferenceType == CubeGroupType_Video_Call) )
     {
         self.conferenceView.hidden = NO;
         [self.conferenceView setImage:[UIImage imageNamed:@"isVideo"]];
     }
-    else if (conferenceType && [conferenceType isEqualToString:CubeGroupType_Share_Desktop_Conference])
+    else if (conferenceType && conferenceType == CubeGroupType_Share_Desktop_Conference)
     {
         self.conferenceView.hidden = NO;
         [self.conferenceView setImage:[UIImage imageNamed:@"isShareDesktop"]];
     }
-    else if (conferenceType && [conferenceType isEqualToString:CubeGroupType_Share_WB])
+    else if (conferenceType && conferenceType == CubeGroupType_Share_WB)
     {
         self.conferenceView.hidden = NO;
         [self.conferenceView setImage:[UIImage imageNamed:@"isWhiteboard"]];

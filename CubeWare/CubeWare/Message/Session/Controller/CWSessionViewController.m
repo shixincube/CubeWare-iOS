@@ -599,11 +599,11 @@
 }
 
 #pragma mark - CWRecordViewDelegate
-- (void)recordView:(CWRecordView *)recordView finshRecord:(NSString *)filePath{
+- (void)recordView:(CWRecordView *)recordView finshRecord:(NSString *)filePath andDuration:(CGFloat)duration{
 	[CubeMediaServiceUtils loadMediaInfo:nil ofFile:filePath withHandler:^(AVAsset *asset, CubeError *error) {
 		if(!error)
 		{
-			float duration = CMTimeGetSeconds([CubeMediaServiceUtils durationOf:asset]);
+//            float duration = CMTimeGetSeconds([CubeMediaServiceUtils durationOf:asset]);
 			NSString *fileName = [filePath lastPathComponent];
 			long long fileSize = [NSData dataWithContentsOfFile:filePath].length;
 			CubeVoiceClipMessage *voiceMsg = [[CubeVoiceClipMessage alloc] initWithFileName:fileName fileSize:fileSize duration:duration url:nil md5:nil andSender:[CWUserModel currentUser] receiver:[CubeUser userWithCubeId:self.session.sessionId andDiaplayName:nil andAvatar:nil]];
@@ -611,7 +611,6 @@
 			voiceMsg.status = CubeMessageStatusSending;
 			voiceMsg.messageDirection = CubeMessageDirectionSent;
             voiceMsg.filePath = filePath;
-			[[CubeWare sharedSingleton].messageService processMessagesInSameSession:@[voiceMsg]];
 			[[CubeWare sharedSingleton].fileService startUploadFileWithFileMessage:voiceMsg];
 		}
 	}];
@@ -960,11 +959,9 @@
         CubeFileMessage *fileMessage = [CWMessageUtil fileMessageWithPath:filePath andName:name forSession:self.session];
         [[CubeWare sharedSingleton].fileService startUploadFileWithFileMessage:fileMessage];
     }else{
-        UIImage *image = [UIImage imageWithContentsOfFile:thumbPath];
         CubeImageMessage *imageMessage = [CWMessageUtil imageMessageWithPath:filePath andThumbPath:thumbPath andName:name andFileSize:0 andSize:size forSession:self.session];
         [[CubeWare sharedSingleton].fileService startUploadFileWithFileMessage:imageMessage];
     }
-    
 }
 -(void)voiceClipMessageOnclick:(CubeMessageEntity *)msg onCell:(CWMessageCell *)cell{
     if ([CubeEngine sharedSingleton].mediaService.isCalling) {
@@ -973,7 +970,7 @@
     }
     if ([msg isKindOfClass:[CubeVoiceClipMessage class]]) {
         CubeVoiceClipMessage * voiceClipMsg =(CubeVoiceClipMessage *) msg;
-        if ([[NSFileManager defaultManager]fileExistsAtPath:voiceClipMsg.filePath]) {
+        if ([CWMessageUtil isExistFile:voiceClipMsg andAddition:@"Voice"]) {
             voiceClipMsg.receipted = YES;
 			if(!voiceClipMsg.receiptTimestamp)
 			{
@@ -990,9 +987,9 @@
             //下载
             [[CubeWare sharedSingleton].fileService startDownloadFileWithFileMessage:voiceClipMsg andBlock:^(CubeFileMessage *message) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    NSString * filePath = message.filePath;
+                    NSString * filePath = [CWMessageUtil saveFilePath:message andAddition:@"Voice"];;
                     voiceClipMsg.receipted = YES;
-                    voiceClipMsg.filePath = filePath;
+                    voiceClipMsg.filePath = message.filePath;
                     if(!voiceClipMsg.receiptTimestamp)
                     {
                         voiceClipMsg.receiptTimestamp = [[NSDate date] timeIntervalSince1970] * 1000;
@@ -1077,7 +1074,8 @@
     CubeMessageEntity *msg = cell.currentContent;
     if(![msg isKindOfClass:[CubeFileMessage class]])return;
     CubeFileMessage * fileMsg = (CubeFileMessage *)msg;
-    if(fileMsg.filePath && [[NSFileManager alloc] fileExistsAtPath:fileMsg.filePath]){
+    if([CWMessageUtil isExistFile:fileMsg andAddition:@"File"])
+    {
         NSURL * url = [NSURL fileURLWithPath:fileMsg.filePath];
         _documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
         _documentInteractionController.delegate = self;
@@ -1086,20 +1084,26 @@
             [CWToastUtil showTextMessage:@"无法预览该文件" andDelay:1.f];
         }
     }else{
-//        [[CubeWare sharedSingleton].fileService startDownloadFileWithFileMessage:fileMsg];
-//        BOOL result = [[[CubeEngine sharedSingleton] getMessageService] acceptMessage:msg.SN withMessageOperator:CubeMessageOperatorFile];
-//        if (result) {
-//            NSLog(@"downFile %lld start",fileMsg.SN);
-//        } else {
-//             NSLog(@"downFile %lld fail",fileMsg.SN);
-//        }
+        [[CubeWare sharedSingleton].fileService startDownloadFileWithFileMessage:fileMsg andBlock:^(CubeFileMessage *message) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSString * filePath = [CWMessageUtil saveFilePath:message andAddition:@"File"];
+                fileMsg.receipted = YES;
+                fileMsg.filePath = message.filePath;
+                if(!fileMsg.receiptTimestamp)
+                {
+                    fileMsg.receiptTimestamp = [[NSDate date] timeIntervalSince1970] * 1000;
+                    id<CWMessageDBProtocol> db = [[[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWMessageDBProtocol)] firstObject];
+                    [db saveOrUpdateMessage:fileMsg];
+                }
+            });
+        }];
     }
 }
 - (void)videoMessageOnclick:(CWMessageCell *)cell{
     if(![cell isKindOfClass:[CWVideoMessageCell class]])return;
     if(![cell.currentContent isKindOfClass:[CubeVideoClipMessage class]])return;
     CubeVideoClipMessage *videoMsg = (CubeVideoClipMessage *)cell.currentContent;
-    if([[NSFileManager defaultManager] fileExistsAtPath:videoMsg.filePath]){
+    if([CWMessageUtil isExistFile:videoMsg andAddition:@"Video"]){
         UIWindow *window = [UIApplication sharedApplication].keyWindow;
         [window addSubview:self.playerView];
         [_playerView updatePlayerProgress:1.f andMessageModel:videoMsg];
@@ -1107,37 +1111,14 @@
         //下载
         [[CubeWare sharedSingleton].fileService startDownloadFileWithFileMessage:videoMsg andBlock:^(CubeFileMessage *message) {
             dispatch_async(dispatch_get_main_queue(), ^{
+                [CWMessageUtil saveFilePath:message andAddition:@"Voice"];
                 CubeVideoClipMessage *videoMsg = (CubeVideoClipMessage *)message;
                 UIWindow *window = [UIApplication sharedApplication].keyWindow;
                 [window addSubview:self.playerView];
                 [self.playerView updatePlayerProgress:1.f andMessageModel:videoMsg];
             });
         }];
-
-//        if([[[CubeEngine sharedSingleton] getMessageService] acceptMessage:videoMsg.SN withMessageOperator:CubeMessageOperatorVideoMP4]){
-//            UIWindow *window = [UIApplication sharedApplication].keyWindow;
-//            [window addSubview:self.playerView];
-//            [_playerView updatePlayerBackgroundViewMessageModel:videoMsg rect:cell.frame];
-//        }else{
-//            [CWToastUtil showTextMessage:@"无法加载短视频" andDelay:1.f];
-//        }
     }
-//    CWVideoContentModel *videoModel = (CWVideoContentModel *)message.message;
-//    if ([[NSFileManager defaultManager] fileExistsAtPath:videoModel.filePath]) {
-//        //播放
-//        [self showShortVideoView:videoModel];
-//        //                [self secretMessageTimerFired:message.message];
-//    }else{
-//        BOOL ret = [[[CubeEngine sharedSingleton] getMessageService] acceptMessage:[message.message.messageSN longLongValue] withMessageOperator:CubeMessageOperatorVideoMP4];
-//        if (ret) {
-//            message.message.msgStatus = CWMessageStatusReceiving;
-//            UIWindow *window = [UIApplication sharedApplication].keyWindow;
-//            [window addSubview:self.playerView];
-//            [_playerView updatePlayerBackgroundViewMessageModel:videoModel rect:viewRect];
-//        }else{
-//            [CWUtils showTextMessage:@"无法加载短视频" onView:self.navigationController.view andDelay:1.f];
-//        }
-//    }
 }
 
 

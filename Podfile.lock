@@ -14,15 +14,15 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - CubeEngineCallKit (1.0.2):
+  - CubeEngineCallKit (1.0.6):
     - CubeEngineFoundationKit
     - CubeWebRTC
-  - CubeEngineFoundationKit (1.0.5):
+  - CubeEngineFoundationKit (1.0.8):
     - Genie
-  - CubeWebRTC (0.1.0)
+  - CubeWebRTC (1.0.1)
   - FLAnimatedImage (1.0.12)
-  - Genie (1.0.1)
-  - M80AttributedLabel (1.6.3)
+  - Genie (1.0.2)
+  - M80AttributedLabel (1.7.1)
   - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
   - SDWebImage (4.4.2):
@@ -31,21 +31,31 @@ PODS:
   - SDWebImage/GIF (4.4.2):
     - FLAnimatedImage (~> 1.0)
     - SDWebImage/Core
+  - SQLiteRepairKit (1.2.1):
+    - WCDBOptimizedSQLCipher (~> 1.2.0)
   - TTTAttributedLabel (2.0.0)
-  - WCDB (1.0.6):
-    - WCDB/sqlcipher (= 1.0.6)
-  - WCDB/sqlcipher (1.0.6)
+  - UMCAnalytics (5.5.2):
+    - UMCCommon
+  - UMCCommon (1.5.3)
+  - UMCSecurityPlugins (1.0.6)
+  - WCDB (1.0.7.5):
+    - SQLiteRepairKit (~> 1.2.0)
+    - WCDBOptimizedSQLCipher (~> 1.2.0)
+  - WCDBOptimizedSQLCipher (1.2.1)
 
 DEPENDENCIES:
   - AFNetworking
-  - CubeEngineCallKit
-  - CubeEngineFoundationKit
+  - CubeEngineCallKit (= 1.0.6)
+  - CubeEngineFoundationKit (= 1.0.8)
   - M80AttributedLabel
   - Masonry
   - MBProgressHUD
   - SDWebImage
   - SDWebImage/GIF
   - TTTAttributedLabel
+  - UMCAnalytics
+  - UMCCommon
+  - UMCSecurityPlugins
   - WCDB
 
 SPEC REPOS:
@@ -60,23 +70,33 @@ SPEC REPOS:
     - Masonry
     - MBProgressHUD
     - SDWebImage
+    - SQLiteRepairKit
     - TTTAttributedLabel
+    - UMCAnalytics
+    - UMCCommon
+    - UMCSecurityPlugins
     - WCDB
+    - WCDBOptimizedSQLCipher
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  CubeEngineCallKit: db58eb5e44b317a2a320397ba9e65257445567c7
-  CubeEngineFoundationKit: 66fc13c8c6ece8a5e579cd0a25b38ed19212bb91
-  CubeWebRTC: b6534511202e4fd299e71af447683417504bc3e9
+  CubeEngineCallKit: 38f3d5e63592c3a42100f1b69cde084e5828936e
+  CubeEngineFoundationKit: 9ee1148119641e3b1e495c9bc0ac0528e4948050
+  CubeWebRTC: 5b0f59164780fccbf172351ef4bcbe2d0d247361
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  Genie: 491febcae661a032fbcb05c7dafe0ec0d97ab068
-  M80AttributedLabel: d06543195d3e451d2ea62ad76d04aa9cea7661d4
+  Genie: 6004c9beabe1726a4e839eb74854f00b0cb97a58
+  M80AttributedLabel: 7cb5064930533719b706c1c8febee32442da7cf3
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  SQLiteRepairKit: 4d21bab9eff6a273f63da6815a0d1659e53f5bde
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
-  WCDB: 4d2926bf695b2e00d785b50afd32c2dcc8cbbd98
+  UMCAnalytics: 6654fd3c8201ff6da5c86a3ae29cd5c8436d3b7b
+  UMCCommon: 016af43c0f769feb1ae1861d65aaf2b23b89c9c7
+  UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
+  WCDB: 8e90babdeb7784c569353a4bd22a66c0a175a882
+  WCDBOptimizedSQLCipher: baf44493b0c7a3d49e97bc5b64a3856f6428ddd1
 
-PODFILE CHECKSUM: fe8850d610bcac41f4756770aa4db654c43c7d85
+PODFILE CHECKSUM: fe6f5b10d7152192dbfe6094dbbaaebd3fbaafcf
 
 COCOAPODS: 1.5.0

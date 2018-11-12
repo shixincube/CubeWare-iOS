@@ -48,8 +48,9 @@
 
 -(NSString *)appropriateName{
 //    NSString *name = [[CubeWare sharedSingleton].infoManager userInfoForCubeId:self.sessionId inSession:nil].appropriateName;
+    NSString *sessionname = [[CubeWare sharedSingleton].messageService.delegate getSessionNameforSession:self];
     NSString *name =  self.sessionName.length > 0 ? self.sessionName :  self.sessionId;
-	return name ? name : self.sessionId;
+    return sessionname?sessionname:name;
 }
 
 - (BOOL)showNickName{
@@ -66,7 +67,7 @@
     [dic setObject:@(self.unReadCount) forKey:@"unReadCount"];
     [dic setObject:@(self.topped) forKey:@"topped"];
     [dic setObject:@(self.showNickName) forKey:@"showNickName"];
-    [dic setObject:self.conferenceType?self.conferenceType:@"" forKey:@"conferenceType"];
+    [dic setObject:@(self.conferenceType) forKey:@"conferenceType"];
     [dic setObject:self.sessionName?self.sessionName:@"" forKey:@"sessionName"];
     NSString *string = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding];
     return string ? string : @"";
@@ -84,7 +85,7 @@
 #pragma mark - kvc
 
 -(void)setValue:(id)value forUndefinedKey:(NSString *)key{
-    
+   
 }
 
 #pragma mark - session info repotor

@@ -82,6 +82,8 @@
     imageMsg.height = size.height;
     imageMsg.status = CubeMessageStatusSending;
     imageMsg.messageDirection = CubeMessageDirectionSent;
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    imageMsg.md5 = [CubeMessageUtil MD5WithBytes:data.bytes andLength:(int)data.length];
     if(session.sessionType == CWSessionTypeGroup)
     {
         imageMsg.groupName = session.sessionId;
@@ -89,14 +91,17 @@
     return imageMsg;
 }
 
-+(CubeFileMessage *)fileMessageWithPath:(NSString *)path andName:(NSString *)name forSession:(CWSession *)session{
++(CubeFileMessage *)fileMessageWithPath:(NSString *)path andName:(NSString *)name forSession:(CWSession *)session
+{
 #warning waiting design
 	CubeUser *receiver = [CubeUser userWithCubeId:session.sessionId andDiaplayName:nil andAvatar:nil];;//[CubeUser userWithCubeId:session.sessionId
 	CubeFileMessage *fileMessage = [[CubeFileMessage alloc] initWithFileName:name fileSize:0 url:nil md5:nil andSender:[CWUserModel currentUser] receiver:receiver];
     fileMessage.filePath = path;
     fileMessage.status = CubeMessageStatusSending;
     fileMessage.sendTime = [CWTimeUtil currentTimestampe];
-     fileMessage.messageDirection = CubeMessageDirectionSent;
+    fileMessage.messageDirection = CubeMessageDirectionSent;
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    fileMessage.md5 = [CubeMessageUtil MD5WithBytes:data.bytes andLength:(int)data.length];
     if(session.sessionType == CWSessionTypeGroup){
         fileMessage.groupName = session.sessionId;
     }
@@ -430,5 +435,31 @@
         return customMessage;
     }
     return nil;
+}
+
++ (BOOL)isExistFile:(CubeFileMessage *)fileMessage andAddition:(NSString *)addtion
+{
+    NSString *path = [CubeFileUtil filePathForUrl:fileMessage.url withAddtionalPath:[NSString stringWithFormat:@"%@/%@",[CubeUser currentUser].cubeId,addtion]];
+    if (path && path.length >0) {
+        return YES;
+    }
+    return NO;
+}
+
++ (NSString *)saveFilePath:(CubeFileMessage *)fileMessage andAddition:(NSString *)addtion
+{
+    NSString *identified = [CubeFileUtil fileIdentifierFor:[NSData dataWithContentsOfFile:fileMessage.filePath]];
+    NSString *path = [CubeFileUtil saveFile:[NSData dataWithContentsOfFile:fileMessage.filePath] withAddtionalPath:[NSString stringWithFormat:@"%@/%@",[CubeUser currentUser].cubeId,addtion]];
+    BOOL ret = [CubeFileUtil createlinkTo:identified for:fileMessage.url withAddtionalPath:[NSString stringWithFormat:@"%@/%@",[CubeUser currentUser].cubeId,addtion]];
+    if (ret) {
+        return path;
+    }
+    return nil;
+}
+
++ (NSString *)getFilePath:(CubeFileMessage *)fileMessage andAddition:(NSString *)addtion
+{
+    NSString *path = [CubeFileUtil filePathForUrl:fileMessage.url withAddtionalPath:[NSString stringWithFormat:@"%@/%@",[CubeUser currentUser].cubeId,addtion]];
+    return path;
 }
 @end

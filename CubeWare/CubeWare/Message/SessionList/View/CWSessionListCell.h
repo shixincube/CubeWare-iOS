@@ -49,5 +49,5 @@
 /**
  会议类型  使用引擎类型 CubeConferenceType
  */
-@property (nonatomic, assign) NSString *conferenceType;
+@property (nonatomic, assign) CubeGroupType conferenceType;
 @end

@@ -133,9 +133,23 @@
             [obj inviteMembersGroup:group from:from Member:invites];
         }
     }
+    [self notifyUpdateList];
 }
 - (void)onGroupRejectInvited:(CubeGroup *)group fromUser:(CubeUser *)from withRejectMember:(CubeUser *)rejectMember
 {}
 - (void)onGroupInviteJoined:(CubeGroup *)group fromUser:(CubeUser *)from withJoinMember:(CubeUser *)joinedMember
-{}
+{
+    
+}
+
+#pragma mark - privite method
+- (void)notifyUpdateList
+{
+    for (id<CWGroupServiceDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWGroupServiceDelegate)]) {
+        if([obj respondsToSelector:@selector(updateGrouplist)])
+        {
+            [obj updateGrouplist];
+        }
+    }
+}
 @end

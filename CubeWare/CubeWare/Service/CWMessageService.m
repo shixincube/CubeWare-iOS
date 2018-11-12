@@ -282,6 +282,9 @@ static dispatch_queue_t cubeware_message_queue = NULL;
             return;
         }
         CWSession *session = [self sessionForMessage:lastMessage];
+        if (session.sessionId == nil) {
+            return;
+        }
 		//保存消息
 		id<CWMessageDBProtocol> messageDB = [[[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWMessageDBProtocol)] lastObject];
 		[messageDB saveOrUpdateMessages:messages];
@@ -399,9 +402,9 @@ static dispatch_queue_t cubeware_message_queue = NULL;
     }
     
 	[session updateWithMessage:message andSummeryHelper:self.delegate];
-    if(self.delegate &&[self.delegate respondsToSelector:@selector(getSessionName:forSession:)])
+    if(self.delegate &&[self.delegate respondsToSelector:@selector(getSessionNameforSession:)])
     {
-        session.sessionName = [self.delegate getSessionName:message forSession:session];
+        session.sessionName = [self.delegate getSessionNameforSession:session];
     }
     return session;
 }

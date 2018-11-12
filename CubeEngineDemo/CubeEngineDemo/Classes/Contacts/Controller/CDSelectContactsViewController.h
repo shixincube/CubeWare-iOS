@@ -45,7 +45,7 @@
 /**
  群组类型
  */
-@property (nonatomic,assign) NSString * groupType;
+@property (nonatomic,assign) CubeGroupType groupType;
 
 @property (nonatomic,strong) CubeGroup *group;
 
