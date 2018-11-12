@@ -13,8 +13,8 @@ target 'CubeWare' do
 	pod 'AFNetworking'
 	pod 'WCDB'
 	pod 'MBProgressHUD'
-	pod 'CubeEngineFoundationKit' , '1.0.8'
-	pod 'CubeEngineCallKit', '1.0.6'
+	pod 'CubeEngineFoundationKit' , '1.0.9'
+	pod 'CubeEngineCallKit', '1.0.7'
 end
 
 target 'CubeEngineDemo' do
@@ -26,8 +26,8 @@ target 'CubeEngineDemo' do
 	pod 'TTTAttributedLabel'
 	pod 'AFNetworking'
 	pod 'WCDB'
-	pod 'CubeEngineFoundationKit' , '1.0.8'
-	pod 'CubeEngineCallKit' , '1.0.6'
+	pod 'CubeEngineFoundationKit' , '1.0.9'
+	pod 'CubeEngineCallKit' , '1.0.7'
 	pod 'UMCCommon'
     pod 'UMCAnalytics'
     pod 'UMCSecurityPlugins'
