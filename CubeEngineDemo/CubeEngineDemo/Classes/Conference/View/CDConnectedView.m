@@ -593,9 +593,16 @@ static CDConnectedView *instanceView = nil;
             }
             self.joinMemberView.contentSize = CGSizeMake(group.members.count * 45 , 0);
             
-            //      NSMutableArray *invitesArray = [NSMutableArray array];
-            for (int i = 0; i < group.invites.count ; i ++) {
-                CubeUser *member = [group.invites objectAtIndex:i];
+            NSMutableArray *inviteMembers = [group.invites mutableCopy];
+            for (CubeGroupMember *member in inviteMembers) {
+                if ([member.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId]) {
+                    [inviteMembers removeObject:member];
+                    break;
+                }
+            }
+            
+            for (int i = 0; i < inviteMembers.count ; i ++) {
+                CubeUser *member = [inviteMembers objectAtIndex:i];
                 UIImageView *iconView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"img_square_avatar_male_default"]];
                 [iconView sd_setImageWithURL:[NSURL URLWithString:member.avatar] placeholderImage:[UIImage imageNamed:@"img_square_avatar_male_default"]];
                 [iconView setFrame:CGRectMake(i * 45, 0, 40, 40)];
@@ -603,7 +610,7 @@ static CDConnectedView *instanceView = nil;
                 iconView.layer.masksToBounds = YES;
                 [self.inviteMemberView addSubview:iconView];
             }
-            self.inviteMemberView.contentSize = CGSizeMake(group.invites.count * 45 , 0);
+            self.inviteMemberView.contentSize = CGSizeMake(inviteMembers.count * 45 , 0);
         }
     });
 }
