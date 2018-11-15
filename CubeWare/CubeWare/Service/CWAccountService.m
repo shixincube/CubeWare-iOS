@@ -63,11 +63,13 @@ static CWAccountService *sharedSingleton = nil;
 }
 
 -(void)onDeviceOnline:(CubeDeviceInfo *)deviceInfo andOnlineList:(NSArray<CubeDeviceInfo *> *)onlineDeviceList{
-    NSLog(@"其它设备登陆该账号,下线处理");
-    for (id<CWInfoRefreshDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWInfoRefreshDelegate)] ) {
-        if([obj respondsToSelector:@selector(changeCurrentUser:)])
-        {
-            [obj changeCurrentUser:nil];
+    NSLog(@"多端登陆,有其他移动端登陆,下线处理");
+    if ([deviceInfo.platform isEqualToString:@"ios"] || [deviceInfo.platform isEqualToString:@"Android"]) {
+        for (id<CWInfoRefreshDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWInfoRefreshDelegate)] ) {
+            if([obj respondsToSelector:@selector(changeCurrentUser:)])
+            {
+                [obj changeCurrentUser:nil];
+            }
         }
     }
 }

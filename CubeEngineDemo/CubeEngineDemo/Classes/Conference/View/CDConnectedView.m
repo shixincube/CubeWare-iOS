@@ -594,10 +594,13 @@ static CDConnectedView *instanceView = nil;
             self.joinMemberView.contentSize = CGSizeMake(group.members.count * 45 , 0);
             
             NSMutableArray *inviteMembers = [group.invites mutableCopy];
-            for (CubeGroupMember *member in inviteMembers) {
-                if ([member.cubeId isEqualToString:[CDShareInstance sharedSingleton].loginModel.cubeId]) {
-                    [inviteMembers removeObject:member];
-                    break;
+            
+            for (CubeGroupMember *join in group.members) {
+                for (CubeGroupMember *member in group.invites) {
+                    
+                    if ([member.cubeId isEqualToString:join.cubeId]) {
+                        [inviteMembers removeObject:member];
+                    }
                 }
             }
             
