@@ -80,12 +80,11 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-//    self.navBarHairlineImageView.hidden = NO;
 }
 
 - (CDMenuView *)menu
 {
-    NSArray *icons = @[@"talk",@"cabinet"];
+//    NSArray *icons = @[@"talk",@"cabinet"];
     NSArray *titles = @[@"加入群",@"创建群"];
 
     if (nil == _menu)

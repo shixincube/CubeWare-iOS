@@ -452,6 +452,7 @@
     NSString *path = [CubeFileUtil saveFile:[NSData dataWithContentsOfFile:fileMessage.filePath] withAddtionalPath:[NSString stringWithFormat:@"%@/%@",[CubeUser currentUser].cubeId,addtion]];
     BOOL ret = [CubeFileUtil createlinkTo:identified for:fileMessage.url withAddtionalPath:[NSString stringWithFormat:@"%@/%@",[CubeUser currentUser].cubeId,addtion]];
     if (ret) {
+        fileMessage.filePath = path;
         return path;
     }
     return nil;

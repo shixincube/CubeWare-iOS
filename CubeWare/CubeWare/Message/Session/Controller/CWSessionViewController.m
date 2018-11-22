@@ -1086,7 +1086,7 @@
     }else{
         [[CubeWare sharedSingleton].fileService startDownloadFileWithFileMessage:fileMsg andBlock:^(CubeFileMessage *message) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSString * filePath = [CWMessageUtil saveFilePath:message andAddition:@"File"];
+                [CWMessageUtil saveFilePath:message andAddition:@"File"];
                 fileMsg.receipted = YES;
                 fileMsg.filePath = message.filePath;
                 if(!fileMsg.receiptTimestamp)

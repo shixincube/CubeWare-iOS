@@ -53,7 +53,7 @@
          if(conferences != nil)
          {
             array = conferences;
-            self.conferenceList = array;
+            weakSelf.conferenceList = array;
          }
          if(completion)
          {

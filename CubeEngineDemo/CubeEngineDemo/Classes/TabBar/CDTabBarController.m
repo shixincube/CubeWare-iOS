@@ -211,14 +211,36 @@
 -(void)onClickAddMoreMembers:(CDConnectedView *)view{
     //弹出选择页面
     NSMutableArray *listArray = [NSMutableArray array];
-
-    for (CDLoginAccountModel *model in [CDShareInstance sharedSingleton].friendList)
-    {
-        if (model.cubeId)
+    NSUInteger index = self.selectedIndex;
+    if (view.conference.bindGroupId == nil) {
+        for (CDLoginAccountModel *model in [CDShareInstance sharedSingleton].friendList)
         {
-             [listArray addObject:model];
+            if (model.cubeId)
+            {
+                [listArray addObject:model];
+            }
         }
     }
+    else
+    {
+        //获取组成员列表
+        CubeGroup *group = [[CDContactsManager shareInstance]getGroupInfo:view.conference.bindGroupId];
+        for (CubeUser *model in group.members)
+        {
+            if (model.cubeId)
+            {
+                [listArray addObject:model];
+            }
+        }
+        for (CubeUser *model in group.masters)
+        {
+            if (model.cubeId)
+            {
+                [listArray addObject:model];
+            }
+        }
+    }
+
     CDSelectContactsViewController *selectView = [[CDSelectContactsViewController alloc]init];
     selectView.hidesBottomBarWhenPushed = YES;
     selectView.dataArray = listArray;
@@ -228,7 +250,7 @@
     if (view.groupType ==CubeGroupType_Share_WB) {
         selectView.whiteBoard = view.whiteBoard;
     }
-    NSUInteger index = self.selectedIndex;
+
     UIViewController *vc = [self.viewControllers objectAtIndex:index];
     if ([vc isKindOfClass:[UINavigationController class]]) {
         UINavigationController *navC = (UINavigationController *)vc;
@@ -236,6 +258,7 @@
         [navC pushViewController:selectView animated:YES];
         [CDConnectedView shareInstance].hidden = YES;
     }
+
 }
 #pragma mark - CDSelectContactsDelegate
 - (void)compeleteInvite

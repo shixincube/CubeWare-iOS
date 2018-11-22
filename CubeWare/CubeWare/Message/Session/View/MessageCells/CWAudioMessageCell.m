@@ -10,7 +10,7 @@
 #import "CWColorUtil.h"
 #import "CWResourceUtil.h"
 #import "CWAVPlayerManager.h"
-
+#import "CWMessageUtil.h"
 #define ImageMaxIndex 3
 #define ImageMinIndex 1
 
@@ -104,6 +104,7 @@
     if(![self.currentContent isKindOfClass:[CubeVoiceClipMessage class]])return;
     CubeVoiceClipMessage *msg = (CubeVoiceClipMessage *)self.currentContent;
     NSString * filePath = msg.filePath;
+    NSString *path = [CWMessageUtil getFilePath:msg andAddition:@"Voice"];
     [[CWAVPlayerManager shareInstance] playAudioWithFilePath:filePath identifier:[NSString stringWithFormat:@"%lld",msg.SN] delegate:self];
 }
 - (void)stopPlayAudio{
