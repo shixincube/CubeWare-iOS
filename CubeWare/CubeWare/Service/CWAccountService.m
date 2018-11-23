@@ -23,7 +23,6 @@
 static CWAccountService *sharedSingleton = nil;
 
 -(void)loginUser:(CWUserModel *)user withToken:(NSString *)token{
- 
     [[CubeEngine sharedSingleton].userService loginWithCubeId:user.cubeId andCubeToken:token andDisplayName:user.displayName];
 }
 
@@ -59,7 +58,7 @@ static CWAccountService *sharedSingleton = nil;
 }
 
 -(void)onUserFailed:(CubeError *)error{
-	
+    NSLog(@"login failed ...");
 }
 
 -(void)onDeviceOnline:(CubeDeviceInfo *)deviceInfo andOnlineList:(NSArray<CubeDeviceInfo *> *)onlineDeviceList{

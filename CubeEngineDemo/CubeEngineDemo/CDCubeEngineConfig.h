@@ -15,7 +15,7 @@
 #define APPID @"2556ce37c3434e1a9c67b1899125751a798"
 #define APPKey @"7f60c5f87e2a4dfab4c591e1145e9d5a799"
 #define GetTokenUrl @"https://dev.user.shixincube.cn/user/login"
-#define GetLicenseUrl @"http://dev.license.shixincube.cn/auth/license/get"
+#define GetLicenseUrl @"https://dev.license.shixincube.cn/auth/license/get"
 
 // testflight配置
 //#define APPID @"6365f0cafd8a47b984bdc08a64327881"

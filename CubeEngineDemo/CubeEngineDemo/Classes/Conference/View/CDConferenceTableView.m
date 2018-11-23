@@ -40,7 +40,7 @@
 
 #pragma mark - sync conference lists
 -(void)syncConferenceList{
-    [[CubeEngine sharedSingleton].conferenceService queryConferenceWithCubeId:nil ConferenceType:@[] completion:^(NSArray *conferences) {
+    [[CubeEngine sharedSingleton].conferenceService queryConferenceWithCubeId:nil ConferenceType:CubeGroupType_Video_Conference | CubeGroupType_Voice_Conference completion:^(NSArray *conferences) {
 //        NSLog(@"sync conference result is :%@ ",conferences);
         [self.conferenceDetailModels removeAllObjects];
         for (CubeConference *conference in conferences) {
