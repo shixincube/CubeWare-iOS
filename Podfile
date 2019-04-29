@@ -2,6 +2,7 @@
 workspace 'CubeEngine_demo.xcworkspace'
 inhibit_all_warnings!
 
+source 'http://code.workinggo.com/Engine/iOS/EngineSpec.git'
 
 target 'CubeWare' do
 	project 'CubeWare/CubeWare.xcodeproj'
@@ -13,8 +14,16 @@ target 'CubeWare' do
 	pod 'AFNetworking'
 	pod 'WCDB'
 	pod 'MBProgressHUD'
-	pod 'CubeEngineFoundationKit' , '1.0.9'
-	pod 'CubeEngineCallKit', '1.0.7'
+
+	pod 'CubeEngineFileKit'
+	pod 'CubeEngineFoundationKit'
+	pod 'CubeEngineCallKit'
+	pod 'CubeEngineMediaKit'
+	pod 'CubeEngineMessageKit'
+	pod 'CubeEngineWhiteBoardKit'
+	pod 'CubeEngineShareDesktopKit'
+	pod 'CubeEngineConferenceKit'
+
 end
 
 target 'CubeEngineDemo' do
@@ -26,9 +35,17 @@ target 'CubeEngineDemo' do
 	pod 'TTTAttributedLabel'
 	pod 'AFNetworking'
 	pod 'WCDB'
-	pod 'CubeEngineFoundationKit' , '1.0.9'
-	pod 'CubeEngineCallKit' , '1.0.7'
 	pod 'UMCCommon'
     pod 'UMCAnalytics'
     pod 'UMCSecurityPlugins'
+ 
+ 	pod 'CubeEngineFileKit'
+	pod 'CubeEngineFoundationKit'
+	pod 'CubeEngineCallKit'
+	pod 'CubeEngineMediaKit'
+	pod 'CubeEngineMessageKit'
+	pod 'CubeEngineWhiteBoardKit'
+	pod 'CubeEngineShareDesktopKit'
+	pod 'CubeEngineConferenceKit'
+
 end

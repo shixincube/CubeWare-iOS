@@ -11,8 +11,8 @@
 
 
 
-//static NSString * const CDServiceHost = @"http://user.shixincube.com";
-static NSString * const CDServiceHost = @"http://125.208.1.67:4000";
+static NSString * const CDServiceHost = @"https://aws-user.shixincube.com";
+//static NSString * const CDServiceHost = @"http://125.208.1.67:4000";
 
 
 // Login

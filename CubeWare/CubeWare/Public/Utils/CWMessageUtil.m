@@ -83,7 +83,7 @@
     imageMsg.status = CubeMessageStatusSending;
     imageMsg.messageDirection = CubeMessageDirectionSent;
     NSData *data = [NSData dataWithContentsOfFile:path];
-    imageMsg.md5 = [CubeMessageUtil MD5WithBytes:data.bytes andLength:(int)data.length];
+    imageMsg.md5 = [CubeFileUtil MD5WithBytes:data.bytes andLength:(int)data.length];
     if(session.sessionType == CWSessionTypeGroup)
     {
         imageMsg.groupName = session.sessionId;
@@ -101,7 +101,7 @@
     fileMessage.sendTime = [CWTimeUtil currentTimestampe];
     fileMessage.messageDirection = CubeMessageDirectionSent;
     NSData *data = [NSData dataWithContentsOfFile:path];
-    fileMessage.md5 = [CubeMessageUtil MD5WithBytes:data.bytes andLength:(int)data.length];
+    fileMessage.md5 = [CubeFileUtil MD5WithBytes:data.bytes andLength:(int)data.length];
     if(session.sessionType == CWSessionTypeGroup){
         fileMessage.groupName = session.sessionId;
     }
@@ -439,7 +439,7 @@
 
 + (BOOL)isExistFile:(CubeFileMessage *)fileMessage andAddition:(NSString *)addtion
 {
-    NSString *path = [CubeFileUtil filePathForUrl:fileMessage.url withAddtionalPath:[NSString stringWithFormat:@"%@/%@",[CubeUser currentUser].cubeId,addtion]];
+    NSString *path = [CubeFilePathUtil filePathForUrl:fileMessage.url withAddtionalPath:[NSString stringWithFormat:@"%@/%@",[CubeUser currentUser].cubeId,addtion]];
     if (path && path.length >0) {
         return YES;
     }
@@ -448,9 +448,9 @@
 
 + (NSString *)saveFilePath:(CubeFileMessage *)fileMessage andAddition:(NSString *)addtion
 {
-    NSString *identified = [CubeFileUtil fileIdentifierFor:[NSData dataWithContentsOfFile:fileMessage.filePath]];
-    NSString *path = [CubeFileUtil saveFile:[NSData dataWithContentsOfFile:fileMessage.filePath] withAddtionalPath:[NSString stringWithFormat:@"%@/%@",[CubeUser currentUser].cubeId,addtion]];
-    BOOL ret = [CubeFileUtil createlinkTo:identified for:fileMessage.url withAddtionalPath:[NSString stringWithFormat:@"%@/%@",[CubeUser currentUser].cubeId,addtion]];
+    NSString *identified = [CubeFilePathUtil fileIdentifierFor:[NSData dataWithContentsOfFile:fileMessage.filePath]];
+    NSString *path = [CubeFilePathUtil saveFile:[NSData dataWithContentsOfFile:fileMessage.filePath] withAddtionalPath:[NSString stringWithFormat:@"%@/%@",[CubeUser currentUser].cubeId,addtion]];
+    BOOL ret = [CubeFilePathUtil createlinkTo:identified for:fileMessage.url withAddtionalPath:[NSString stringWithFormat:@"%@/%@",[CubeUser currentUser].cubeId,addtion]];
     if (ret) {
         return path;
     }
@@ -459,7 +459,7 @@
 
 + (NSString *)getFilePath:(CubeFileMessage *)fileMessage andAddition:(NSString *)addtion
 {
-    NSString *path = [CubeFileUtil filePathForUrl:fileMessage.url withAddtionalPath:[NSString stringWithFormat:@"%@/%@",[CubeUser currentUser].cubeId,addtion]];
+    NSString *path = [CubeFilePathUtil filePathForUrl:fileMessage.url withAddtionalPath:[NSString stringWithFormat:@"%@/%@",[CubeUser currentUser].cubeId,addtion]];
     return path;
 }
 @end

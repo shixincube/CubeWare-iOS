@@ -13,7 +13,14 @@
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 
 #import <CubeEngineFoundationKit/CubeEngineFoundationKit.h>
+#import <CubeEngineMessageKit/CubeEngineMessageKit.h>
 #import <CubeEngineCallKit/CubeEngineCallKit.h>
+#import <CubeEngineMediaKit/CubeEngineMediaKit.h>
+#import <CubeEngineConferenceKit/CubeEngineConferenceKit.h>
+#import <CubeEngineWhiteBoardKit/CubeEngineWhiteBoardKit.h>
+#import <CubeEngineShareDesktopKit/CubeEngineShareDesktopKit.h>
+#import <CubeEngineFileKit/CubeEngineFileKit.h>
+
 #import "AFNetworking.h"
 
 #import "CubeWare.h"
@@ -22,8 +29,8 @@
 
 
 
-//static NSString * const CDServiceHost = @"http://user.shixincube.com";
-static NSString * const CDServiceHost = @"http://125.208.1.67:4000";
+static NSString * const CDServiceHost = @"https://aws-user.shixincube.com";
+//static NSString * const CDServiceHost = @"http://125.208.1.67:4000";
 
 static NSString * QueryCubeIdListByAppId = @"/user/page/findByAppId";
 

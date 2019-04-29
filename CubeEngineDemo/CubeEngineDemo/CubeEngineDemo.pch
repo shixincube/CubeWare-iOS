@@ -70,7 +70,14 @@
 
 #pragma mark - Framework
 #import <CubeEngineFoundationKit/CubeEngineFoundationKit.h>
+#import <CubeEngineMessageKit/CubeEngineMessageKit.h>
 #import <CubeEngineCallKit/CubeEngineCallKit.h>
+#import <CubeEngineMediaKit/CubeEngineMediaKit.h>
+#import <CubeEngineConferenceKit/CubeEngineConferenceKit.h>
+#import <CubeEngineWhiteBoardKit/CubeEngineWhiteBoardKit.h>
+#import <CubeEngineShareDesktopKit/CubeEngineShareDesktopKit.h>
+#import <CubeEngineFileKit/CubeEngineFileKit.h>
+
 #import <Masonry.h>
 #import <AFNetworking.h>
 //#import <MBProgressHUD.h>

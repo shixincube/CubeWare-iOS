@@ -774,7 +774,7 @@
 				A810858F21339CB8002A2A57 /* Frameworks */,
 				A810859021339CB8002A2A57 /* Resources */,
 				A890E3FD2133D9C6006F74FF /* Embed Frameworks */,
-				2BFEA8AB4ED330BA636C249B /* [CP] Embed Pods Frameworks */,
+				B4E5B9983D6542DEF5EE67E9 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -906,30 +906,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2BFEA8AB4ED330BA636C249B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/../Pods/Target Support Files/Pods-CubeEngineDemo/Pods-CubeEngineDemo-frameworks.sh",
-				"${PODS_ROOT}/CubeEngineCallKit/CubeEngineCallKit/Frameworks/CubeEngineCallKit.framework",
-				"${PODS_ROOT}/CubeEngineFoundationKit/CubeEngineFoundationKit/Frameworks/CubeEngineFoundationKit.framework",
-				"${PODS_ROOT}/CubeWebRTC/WebRTC/Frameworks/WebRTC.framework",
-				"${PODS_ROOT}/Genie/Genie/Frameworks/Genie.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CubeEngineCallKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CubeEngineFoundationKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Genie.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-CubeEngineDemo/Pods-CubeEngineDemo-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		8AF7D28623DF592F5A1AE692 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -946,6 +922,50 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B4E5B9983D6542DEF5EE67E9 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CubeEngineDemo/Pods-CubeEngineDemo-frameworks.sh",
+				"${PODS_ROOT}/CubeEngineCallKit/CubeEngineCallKit/Frameworks/CubeEngineCallKit.framework",
+				"${PODS_ROOT}/CubeEngineConferenceKit/CubeEngineConferenceKit/Frameworks/CubeEngineConferenceKit.framework",
+				"${PODS_ROOT}/CubeEngineFileKit/CubeEngineFileKit/Frameworks/CubeEngineFileKit.framework",
+				"${PODS_ROOT}/CubeEngineFoundationKit/CubeEngineFoundationKit/Frameworks/CubeEngineFoundationKit.framework",
+				"${PODS_ROOT}/CubeEngineFoundationKit/CubeEngineFoundationKit/Frameworks/Genie.framework",
+				"${PODS_ROOT}/CubeEngineMediaKit/CubeEngineMediaKit/Frameworks/CubeEngineMediaKit.framework",
+				"${PODS_ROOT}/CubeEngineMediaKit/CubeEngineMediaKit/Frameworks/SocketIO.framework",
+				"${PODS_ROOT}/CubeEngineMediaKit/CubeEngineMediaKit/Frameworks/Starscream.framework",
+				"${PODS_ROOT}/CubeEngineMediaKit/CubeEngineMediaKit/Frameworks/WebRTC.framework",
+				"${PODS_ROOT}/CubeEngineMessageKit/CubeEngineMessageKit/Frameworks/CubeEngineMessageKit.framework",
+				"${PODS_ROOT}/CubeEngineShareDesktopKit/CubeEngineShareDesktopKit/Frameworks/CubeEngineShareDesktopKit.framework",
+				"${PODS_ROOT}/CubeEngineWhiteBoardKit/CubeEngineWhiteBoardKit/Frameworks/CubeEngineWhiteBoardKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CubeEngineCallKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CubeEngineConferenceKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CubeEngineFileKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CubeEngineFoundationKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Genie.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CubeEngineMediaKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CubeEngineMessageKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CubeEngineShareDesktopKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CubeEngineWhiteBoardKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CubeEngineDemo/Pods-CubeEngineDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1182,6 +1202,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D3B74293304E692767810F4A /* Pods-CubeEngineDemo.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1245,6 +1266,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 891A211A2DA48F24B6CEE0D2 /* Pods-CubeEngineDemo.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
