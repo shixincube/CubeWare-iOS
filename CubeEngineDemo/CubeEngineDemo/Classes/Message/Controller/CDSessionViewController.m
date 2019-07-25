@@ -133,7 +133,7 @@
 
 
 - (void)showTipView{
-    [[CubeEngine sharedSingleton].conferenceService queryConferenceWithConferenceType:@[CubeGroupType_Voice_Call_String,CubeGroupType_Video_Call_String,CubeGroupType_Share_Desktop_Conference_String] groupIds:@[self.session.sessionId] completion:^(NSArray *conferences) {
+    [[CubeEngine sharedSingleton].conferenceService queryConferenceWithConferenceType:(CubeGroupType_Voice_Call | CubeGroupType_Video_Call | CubeGroupType_Share_Desktop_Conference) groupIds:@[self.session.sessionId] completion:^(NSArray *conferences) {
         if (conferences && conferences.count > 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 CubeConference *conference = conferences.firstObject;

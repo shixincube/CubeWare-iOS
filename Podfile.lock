@@ -14,16 +14,16 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - CubeEngineCallKit (0.1.0):
+  - CubeEngineCallKit (0.1.5):
     - CubeEngineMediaKit
-  - CubeEngineConferenceKit (0.1.0)
-  - CubeEngineFileKit (1.0.1)
-  - CubeEngineFoundationKit (1.1.2)
-  - CubeEngineMediaKit (0.2.0):
+  - CubeEngineConferenceKit (1.0.18)
+  - CubeEngineFileKit (1.0.2)
+  - CubeEngineFoundationKit (1.1.8)
+  - CubeEngineMediaKit (1.0.10):
     - CubeEngineFoundationKit
-  - CubeEngineMessageKit (0.1.0)
-  - CubeEngineShareDesktopKit (0.1.0)
-  - CubeEngineWhiteBoardKit (0.1.0)
+  - CubeEngineMessageKit (1.0.0)
+  - CubeEngineShareDesktopKit (1.0.0)
+  - CubeEngineWhiteBoardKit (1.0.1)
   - FLAnimatedImage (1.0.12)
   - M80AttributedLabel (1.9.5)
   - Masonry (1.1.0)
@@ -94,14 +94,14 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  CubeEngineCallKit: e696ca94d3ac2e0e0760f706361b65b59298ed88
-  CubeEngineConferenceKit: 6f9cea581d26ae0e2ab61f7b698ea053853b19d2
-  CubeEngineFileKit: ffc627cbfc7392ba4ca8b4a3e717e7b42c3e2b14
-  CubeEngineFoundationKit: 09c3a710a46d7cc15816e92ac547d28fc566fee1
-  CubeEngineMediaKit: 5723a1b2ff2fefecf1fbfa26368f25d60e41452d
-  CubeEngineMessageKit: c4f4f93abd024583ace0951a88f0cb55810c553c
-  CubeEngineShareDesktopKit: ab7371e2be76142d2b244643ed9466b200a90774
-  CubeEngineWhiteBoardKit: 443cf19d9c69f9e70e88788af4cfeddc61bd6f6e
+  CubeEngineCallKit: 9ec801f752696cebfff9d8995f38e27fb288e6d8
+  CubeEngineConferenceKit: 27d6125419366c9330f2191dc5da6b20818130a8
+  CubeEngineFileKit: baa5647bbdfe14c346a60006817fe05d1ed56ce2
+  CubeEngineFoundationKit: c8b0398519b1b26ab7b6eb5bb8f1025e9f4aa885
+  CubeEngineMediaKit: dc2eef74fdac49c3eed3da3c7d06888b11b9c2ea
+  CubeEngineMessageKit: f886632a9cd1f450fd2be1f89fc235fdd85dcd6c
+  CubeEngineShareDesktopKit: 72e101ce7f3d19252f1b7436b055f0db9be44dd3
+  CubeEngineWhiteBoardKit: 000d15a1f572600ccf07c3595af64f6c0b10b853
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   M80AttributedLabel: d1177fbd7451d134794b50e91ca8b0cb167ef530
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -115,6 +115,6 @@ SPEC CHECKSUMS:
   WCDB: 8e90babdeb7784c569353a4bd22a66c0a175a882
   WCDBOptimizedSQLCipher: baf44493b0c7a3d49e97bc5b64a3856f6428ddd1
 
-PODFILE CHECKSUM: 2bc93bc46c4f40919413a8204a746e3e141412ff
+PODFILE CHECKSUM: b0e584a57264bbbcabaa45b2e698ef8e235dc95e
 
 COCOAPODS: 1.6.1

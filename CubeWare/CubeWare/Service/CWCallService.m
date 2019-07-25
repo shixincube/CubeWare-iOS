@@ -94,7 +94,8 @@
              localView = [[CubeEngine sharedSingleton].mediaService getLocalViewForTarget:session.callee.cubeId];
             CGRect frame = CGRectMake(0, 0, UIScreenWidth, UIScreenHeight);
             remoteView.frame = frame;
-            localView.frame = CGRectMake(UIScreenWidth - UIScreenWidth / 3.6, 20, UIScreenWidth / 3.6, 4.0 / 3.0 * UIScreenWidth / 3.6);
+            localView.frame = CGRectMake(20, 20, UIScreenWidth / 3.6, 4.0 / 3.0 * UIScreenWidth / 3.6);
+//            localView.frame = CGRectMake(UIScreenWidth - (UIScreenWidth / 3.6), 20, UIScreenWidth / 3.6, 4.0 / 3.0 * UIScreenWidth / 3.6);
         }
         else{
             remoteView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenHeight)];

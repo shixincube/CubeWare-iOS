@@ -59,7 +59,16 @@ static CWAccountService *sharedSingleton = nil;
 }
 
 -(void)onUserFailed:(CubeError *)error{
-	
+    NSLog(@"on user error : %@",error);
+    if (error.errorCode == 2002) {
+        for (id<CWInfoRefreshDelegate> obj in [[CWWorkerFinder defaultFinder] findWorkerForProtocol:@protocol(CWInfoRefreshDelegate)] ) {
+            if([obj respondsToSelector:@selector(changeCurrentUser:)])
+            {
+                NSLog(@"invalid cubeToken，not fund this cubetoken 下线处理");
+                [obj changeCurrentUser:nil];
+            }
+        }
+    }
 }
 
 -(void)onDeviceOnline:(CubeDeviceInfo *)deviceInfo andOnlineList:(NSArray<CubeDeviceInfo *> *)onlineDeviceList{

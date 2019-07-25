@@ -15,14 +15,14 @@ target 'CubeWare' do
 	pod 'WCDB'
 	pod 'MBProgressHUD'
 
-	pod 'CubeEngineFileKit'
-	pod 'CubeEngineFoundationKit'
-	pod 'CubeEngineCallKit'
-	pod 'CubeEngineMediaKit'
-	pod 'CubeEngineMessageKit'
-	pod 'CubeEngineWhiteBoardKit'
-	pod 'CubeEngineShareDesktopKit'
-	pod 'CubeEngineConferenceKit'
+  pod 'CubeEngineFileKit'
+  pod 'CubeEngineFoundationKit'
+  pod 'CubeEngineCallKit'
+  pod 'CubeEngineMediaKit'
+  pod 'CubeEngineMessageKit'
+  pod 'CubeEngineWhiteBoardKit'
+  pod 'CubeEngineShareDesktopKit'
+  pod 'CubeEngineConferenceKit'
 
 end
 
@@ -36,16 +36,16 @@ target 'CubeEngineDemo' do
 	pod 'AFNetworking'
 	pod 'WCDB'
 	pod 'UMCCommon'
-    pod 'UMCAnalytics'
-    pod 'UMCSecurityPlugins'
- 
- 	pod 'CubeEngineFileKit'
-	pod 'CubeEngineFoundationKit'
-	pod 'CubeEngineCallKit'
-	pod 'CubeEngineMediaKit'
-	pod 'CubeEngineMessageKit'
-	pod 'CubeEngineWhiteBoardKit'
-	pod 'CubeEngineShareDesktopKit'
-	pod 'CubeEngineConferenceKit'
+  pod 'UMCAnalytics'
+  pod 'UMCSecurityPlugins'
+
+  pod 'CubeEngineFileKit'
+  pod 'CubeEngineFoundationKit'
+  pod 'CubeEngineCallKit'
+  pod 'CubeEngineMediaKit'
+  pod 'CubeEngineMessageKit'
+  pod 'CubeEngineWhiteBoardKit'
+  pod 'CubeEngineShareDesktopKit'
+  pod 'CubeEngineConferenceKit'
 
 end
